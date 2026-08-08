@@ -1,0 +1,5 @@
+# Dev-only dependencies for building the project (not used by the deployed app).
+# Install these locally to run scripts/run_part_b.py.
+-r requirements.txt
+nltk>=3.8
+finvader
