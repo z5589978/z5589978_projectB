@@ -75,14 +75,29 @@ Mark each item [ ] = not started, [~] = in progress, [x] = done.
 - [ ] Fusion: equity MS base vs. sentiment-tilted before/after comparison
 - [ ] Negative/flat result explained honestly if sentiment doesn't improve Sharpe
 
-### Innovation: Extended VADER Lexicon (30% Innovation criterion)
-- [ ] FINANCE_LEXICON dict defined in src/sentiment.py (~80 terms)
-- [ ] Polarity scores assigned and justified (positive/negative finance terms)
-- [ ] sia.lexicon.update() applied after init
-- [ ] Before/after comparison on headline corpus (% non-neutral, coverage)
-- [ ] Effect on sector sentiment index documented
-- [ ] Effect on fusion comparison documented
-- [ ] Described with equation/formula in report Section 4
+### Innovation: FinVADER-Extended — mined + multi-agent-rated lexicon (30% criterion)
+Supersedes the old "~80 hand-picked terms" plan. Base scorer moves from plain
+VADER to finVADER (SentiBigNomics ×0.1 + Henry, 13,324 terms, −4…+4 scale), then
+we layer our own mined words on top via a third `.lexicon.update()`.
+- [x] Confirmed finVADER integration point (NLTK analyzer + .lexicon.update; the
+      finvader() convenience function can't inject custom words)
+- [x] Switch base scorer in src/sentiment.py to finVADER (+ FinVADER-Extension)
+- [x] Mine 452 real financial-news articles (CNBC + MarketWatch + Reuters-via-GNews)
+- [x] Curate per-article metadata → data/lexicon_extension/ (gitignored raw text)
+- [x] Extract candidate words NOT already in finVADER's 13,324-term lexicon (828 → 150)
+- [x] Cap candidates at 150 by frequency, proper nouns dropped; user confirmed
+- [x] 10 independent agent rating passes on the −4…+4 VADER scale (raw archived)
+- [x] Filter: |mean| ≥ 0.5 AND std < 2.0 → 20 survivors (user chose 0.5 floor;
+      std never binds, max std 0.52 — documented)
+- [x] Build FinVADER-Extended; 20 survivors injected on −4…+4 scale
+- [x] USER CHECKPOINT: user spot-checked, approved 20-word set
+- [x] Before/after: finVADER 39.3% → Extended 41.3% non-neutral (+2.02pts, 2,176 headlines)
+- [x] Regenerate sector_sentiment_index.csv + fusion (fusion −0.012 Sharpe, honest neg.)
+- [ ] Described with methodology + filtering equation in report Section 4 (report stage)
+
+**Artifacts:** scripts/lexicon/01–04, results/lexicon/ (kept_lexicon.csv,
+candidate_scores.csv, ratings_matrix.csv, before_after.csv, corpus_summary.csv,
+ratings/*.json). Raw corpus gitignored under data/lexicon_extension/.
 
 ### App (15% of Part B)
 - [x] streamlit_app.py created at folder root

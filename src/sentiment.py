@@ -1,9 +1,20 @@
-"""Station 3 - VADER sentiment model and sector sentiment index.
+"""Station 3 - FinVADER-Extended sentiment model and sector sentiment index.
+
+Scorer (build-time only; the deployed app never runs this):
+  base   = finVADER  (VADER + SentiBigNomics x0.1 + Henry; ~13,300 terms, Week 9)
+  + our  = FinVADER-Extension, 20 finance-news words mined from a fresh CNBC/
+           Reuters/MarketWatch corpus and rated by a 10-agent panel, kept only
+           where |mean valence| >= 0.5 and cross-agent std < 2.0. Provenance:
+           scripts/lexicon/, data/lexicon_extension/kept_lexicon.csv.
+
+The combined scorer is FinVADER-Extended. Words are added on VADER's native
+-4..+4 valence scale (e.g. "soars" = 3.1, like VADER's "great" = 3.1).
 
 Pipeline:
-  1. Score each headline with VADER compound score [-1, +1].
+  1. Score each headline with the FinVADER-Extended compound score [-1, +1].
   2. Average scores per (trading_date, ticker): ticker-day sentiment.
-  3. Average ticker scores per (trading_date, sector): sector-day sentiment.
+  3. Average ticker scores per (trading_date, sector): sector-day sentiment
+     (equal-weight tickers within a sector).
   4. Lag by 1 trading day so day-t signal uses only data available at t-1.
   5. Fill missing days by carrying the last known value forward (ffill),
      then fill any remaining leading NaN with 0 (neutral).
@@ -12,17 +23,38 @@ from __future__ import annotations
 
 import pandas as pd
 
+# FinVADER-Extension: 20 mined + panel-rated finance words (word -> mean valence,
+# -4..+4). Derived from data/lexicon_extension/kept_lexicon.csv. Not present in
+# finVADER's own lexicon (candidates were filtered against it), so these are
+# genuine additions.
+FINVADER_EXTENSION = {
+    "rout": -3.8, "cyclosporiasis": -2.1, "concerns": -2.0, "dents": -2.0,
+    "slows": -2.0, "tariffs": -2.0, "overshadows": -1.9, "faces": -1.0,
+    "costs": -1.0, "behind": -1.0, "hikes": -0.8,
+    "returns": 0.9, "bigger": 1.0, "raises": 1.0, "added": 1.0, "ahead": 1.0,
+    "highs": 2.0, "climbs": 2.0, "lifts": 2.0, "soars": 3.1,
+}
 
-def _get_analyzer():
-    """Return a VADER SentimentIntensityAnalyzer, downloading lexicon if needed."""
+
+def _get_analyzer(extended: bool = True):
+    """Return the FinVADER-Extended analyzer (or plain finVADER if extended=False).
+
+    Base = NLTK VADER lexicon + finVADER's two finance word lists (SentiBigNomics
+    scaled x0.1, Henry as-is), matching the Week 9 lecture. When extended, our 20
+    mined words are layered on top via a third lexicon.update().
+    """
     import nltk
-    try:
-        from nltk.sentiment.vader import SentimentIntensityAnalyzer
-        return SentimentIntensityAnalyzer()
-    except LookupError:
-        nltk.download("vader_lexicon", quiet=True)
-        from nltk.sentiment.vader import SentimentIntensityAnalyzer
-        return SentimentIntensityAnalyzer()
+    nltk.download("vader_lexicon", quiet=True)
+    from nltk.sentiment.vader import SentimentIntensityAnalyzer
+    from finvader.SentiBignomics import lexicon1
+    from finvader.Henry import lexicon2
+
+    sia = SentimentIntensityAnalyzer()
+    sia.lexicon.update({term: value * 0.1 for term, value in lexicon1().items()})
+    sia.lexicon.update(lexicon2())
+    if extended:
+        sia.lexicon.update(FINVADER_EXTENSION)
+    return sia
 
 
 def score_headlines(headlines: pd.DataFrame) -> pd.DataFrame:

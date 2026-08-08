@@ -321,12 +321,12 @@ with plt.rc_context(_style()):
         s = sector_sent[sector].rolling(21).mean()  # 1-month smoothing
         ax.plot(s.index, s.values, label=sector, color=COLORS[i % len(COLORS)], lw=1.3)
     ax.axhline(0, color="gray", lw=0.9, ls="--")
-    ax.set_xlabel("Date"); ax.set_ylabel("VADER compound score (1-month MA)")
-    ax.set_title("Figure 5. Sector sentiment index, 2020–2023 (1-month rolling mean)",
+    ax.set_xlabel("Date"); ax.set_ylabel("FinVADER-Extended compound (1-month MA)")
+    ax.set_title("Figure 5. Sector sentiment index (FinVADER-Extended), 2020–2023 (1-month rolling mean)",
                  fontsize=10, fontweight="bold")
     ax.legend(fontsize=7, ncol=2)
     fig.text(0.5, -0.03,
-             "Note: VADER compound score in [−1, +1]. Score lagged by 1 trading day to avoid look-ahead. "
+             "Note: FinVADER-Extended compound score in [−1, +1]. Score lagged by 1 trading day to avoid look-ahead. "
              "Missing days carry-forward filled then set to 0 (neutral). "
              "Source: FINS3645 project data bundle, news_headlines.parquet.",
              ha="center", fontsize=7, color="gray")

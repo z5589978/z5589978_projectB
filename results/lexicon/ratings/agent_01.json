@@ -1,0 +1,752 @@
+[
+ {
+  "w": "earnings",
+  "s": 0,
+  "r": "neutral financial metric, direction unspecified"
+ },
+ {
+  "w": "stocks",
+  "s": 0,
+  "r": "neutral asset class noun"
+ },
+ {
+  "w": "jobs",
+  "s": 1,
+  "r": "employment context mildly positive"
+ },
+ {
+  "w": "billion",
+  "s": 0,
+  "r": "neutral magnitude unit"
+ },
+ {
+  "w": "markets",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "investors",
+  "s": 0,
+  "r": "neutral participant noun"
+ },
+ {
+  "w": "rates",
+  "s": 0,
+  "r": "neutral, direction unspecified"
+ },
+ {
+  "w": "yen",
+  "s": 0,
+  "r": "neutral currency noun"
+ },
+ {
+  "w": "prices",
+  "s": 0,
+  "r": "neutral noun, no direction"
+ },
+ {
+  "w": "data",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "central",
+  "s": 0,
+  "r": "neutral descriptor (central bank)"
+ },
+ {
+  "w": "expectations",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "estimates",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "reports",
+  "s": 0,
+  "r": "neutral noun/verb"
+ },
+ {
+  "w": "second",
+  "s": 0,
+  "r": "neutral ordinal"
+ },
+ {
+  "w": "million",
+  "s": 0,
+  "r": "neutral magnitude unit"
+ },
+ {
+  "w": "posts",
+  "s": 0,
+  "r": "neutral reporting verb"
+ },
+ {
+  "w": "forecasts",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "talks",
+  "s": 0,
+  "r": "neutral, negotiations noun"
+ },
+ {
+  "w": "lifts",
+  "s": 2,
+  "r": "raises/boosts, positive"
+ },
+ {
+  "w": "expected",
+  "s": 0,
+  "r": "neutral anticipation"
+ },
+ {
+  "w": "traders",
+  "s": 0,
+  "r": "neutral participant noun"
+ },
+ {
+  "w": "chip",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "ahead",
+  "s": 1,
+  "r": "leading/outperforming mildly positive"
+ },
+ {
+  "w": "trading",
+  "s": 0,
+  "r": "neutral activity noun"
+ },
+ {
+  "w": "hits",
+  "s": 0,
+  "r": "neutral verb, context dependent"
+ },
+ {
+  "w": "sources",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "costs",
+  "s": -1,
+  "r": "expenses, mildly negative"
+ },
+ {
+  "w": "holds",
+  "s": 0,
+  "r": "neutral, steady"
+ },
+ {
+  "w": "federal",
+  "s": 0,
+  "r": "neutral descriptor"
+ },
+ {
+  "w": "shows",
+  "s": 0,
+  "r": "neutral reporting verb"
+ },
+ {
+  "w": "plans",
+  "s": 0,
+  "r": "neutral noun/verb"
+ },
+ {
+  "w": "results",
+  "s": 0,
+  "r": "neutral outcome noun"
+ },
+ {
+  "w": "three",
+  "s": 0,
+  "r": "neutral number"
+ },
+ {
+  "w": "key",
+  "s": 0,
+  "r": "neutral emphasis descriptor"
+ },
+ {
+  "w": "term",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "decision",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "streaming",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "climbs",
+  "s": 2,
+  "r": "rising price, positive"
+ },
+ {
+  "w": "closes",
+  "s": 0,
+  "r": "neutral session verb"
+ },
+ {
+  "w": "analysts",
+  "s": 0,
+  "r": "neutral participant noun"
+ },
+ {
+  "w": "signals",
+  "s": 0,
+  "r": "neutral noun/verb"
+ },
+ {
+  "w": "long",
+  "s": 0,
+  "r": "neutral duration/position"
+ },
+ {
+  "w": "five",
+  "s": 0,
+  "r": "neutral number"
+ },
+ {
+  "w": "ever",
+  "s": 0,
+  "r": "neutral intensifier"
+ },
+ {
+  "w": "services",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "payrolls",
+  "s": 0,
+  "r": "neutral labor metric"
+ },
+ {
+  "w": "latest",
+  "s": 0,
+  "r": "neutral recency descriptor"
+ },
+ {
+  "w": "hedge",
+  "s": 0,
+  "r": "neutral fund/strategy noun"
+ },
+ {
+  "w": "according",
+  "s": 0,
+  "r": "neutral attribution word"
+ },
+ {
+  "w": "traffic",
+  "s": 0,
+  "r": "neutral activity metric"
+ },
+ {
+  "w": "faces",
+  "s": -1,
+  "r": "confronting difficulty, mildly negative"
+ },
+ {
+  "w": "hikes",
+  "s": -1,
+  "r": "often rate hikes, mildly negative"
+ },
+ {
+  "w": "driven",
+  "s": 0,
+  "r": "neutral causation word"
+ },
+ {
+  "w": "meeting",
+  "s": 0,
+  "r": "neutral event noun"
+ },
+ {
+  "w": "third",
+  "s": 0,
+  "r": "neutral ordinal"
+ },
+ {
+  "w": "truck",
+  "s": 0,
+  "r": "neutral object noun"
+ },
+ {
+  "w": "firms",
+  "s": 0,
+  "r": "neutral company noun"
+ },
+ {
+  "w": "returns",
+  "s": 1,
+  "r": "investment returns mildly positive"
+ },
+ {
+  "w": "weekly",
+  "s": 0,
+  "r": "neutral frequency descriptor"
+ },
+ {
+  "w": "slows",
+  "s": -2,
+  "r": "deceleration, negative"
+ },
+ {
+  "w": "maker",
+  "s": 0,
+  "r": "neutral producer noun"
+ },
+ {
+  "w": "chain",
+  "s": 0,
+  "r": "neutral supply/store noun"
+ },
+ {
+  "w": "told",
+  "s": 0,
+  "r": "neutral reporting verb"
+ },
+ {
+  "w": "yields",
+  "s": 0,
+  "r": "neutral, direction unspecified"
+ },
+ {
+  "w": "wants",
+  "s": 0,
+  "r": "neutral desire verb"
+ },
+ {
+  "w": "bigger",
+  "s": 1,
+  "r": "growth connotation mildly positive"
+ },
+ {
+  "w": "survey",
+  "s": 0,
+  "r": "neutral data noun"
+ },
+ {
+  "w": "tariffs",
+  "s": -2,
+  "r": "trade barriers, negative for markets"
+ },
+ {
+  "w": "days",
+  "s": 0,
+  "r": "neutral time noun"
+ },
+ {
+  "w": "highs",
+  "s": 2,
+  "r": "record highs, positive"
+ },
+ {
+  "w": "bets",
+  "s": 0,
+  "r": "neutral positioning noun"
+ },
+ {
+  "w": "advertising",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "sold",
+  "s": 0,
+  "r": "neutral transaction verb"
+ },
+ {
+  "w": "options",
+  "s": 0,
+  "r": "neutral derivative noun"
+ },
+ {
+  "w": "bonds",
+  "s": 0,
+  "r": "neutral asset noun"
+ },
+ {
+  "w": "dents",
+  "s": -2,
+  "r": "damages/reduces, negative"
+ },
+ {
+  "w": "administration",
+  "s": 0,
+  "r": "neutral government noun"
+ },
+ {
+  "w": "decade",
+  "s": 0,
+  "r": "neutral time noun"
+ },
+ {
+  "w": "poll",
+  "s": 0,
+  "r": "neutral survey noun"
+ },
+ {
+  "w": "saw",
+  "s": 0,
+  "r": "neutral observation verb"
+ },
+ {
+  "w": "workers",
+  "s": 0,
+  "r": "neutral labor noun"
+ },
+ {
+  "w": "gas",
+  "s": 0,
+  "r": "neutral commodity noun"
+ },
+ {
+  "w": "platform",
+  "s": 0,
+  "r": "neutral tech noun"
+ },
+ {
+  "w": "chief",
+  "s": 0,
+  "r": "neutral executive noun"
+ },
+ {
+  "w": "across",
+  "s": 0,
+  "r": "neutral preposition"
+ },
+ {
+  "w": "airlines",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "finds",
+  "s": 0,
+  "r": "neutral discovery verb"
+ },
+ {
+  "w": "trillion",
+  "s": 0,
+  "r": "neutral magnitude unit"
+ },
+ {
+  "w": "continues",
+  "s": 0,
+  "r": "neutral persistence verb"
+ },
+ {
+  "w": "calls",
+  "s": 0,
+  "r": "neutral, options/statement noun"
+ },
+ {
+  "w": "concerns",
+  "s": -2,
+  "r": "worries, negative"
+ },
+ {
+  "w": "closing",
+  "s": 0,
+  "r": "neutral session word"
+ },
+ {
+  "w": "paying",
+  "s": 0,
+  "r": "neutral payment verb"
+ },
+ {
+  "w": "freight",
+  "s": 0,
+  "r": "neutral logistics noun"
+ },
+ {
+  "w": "signs",
+  "s": 0,
+  "r": "neutral indicators noun"
+ },
+ {
+  "w": "came",
+  "s": 0,
+  "r": "neutral arrival verb"
+ },
+ {
+  "w": "leaves",
+  "s": 0,
+  "r": "neutral departure verb"
+ },
+ {
+  "w": "historic",
+  "s": 0,
+  "r": "neutral scale descriptor"
+ },
+ {
+  "w": "healthcare",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "odds",
+  "s": 0,
+  "r": "neutral probability noun"
+ },
+ {
+  "w": "four",
+  "s": 0,
+  "r": "neutral number"
+ },
+ {
+  "w": "even",
+  "s": 0,
+  "r": "neutral adverb"
+ },
+ {
+  "w": "margin",
+  "s": 0,
+  "r": "neutral profitability metric"
+ },
+ {
+  "w": "months",
+  "s": 0,
+  "r": "neutral time noun"
+ },
+ {
+  "w": "salad",
+  "s": 0,
+  "r": "neutral food noun"
+ },
+ {
+  "w": "fiscal",
+  "s": 0,
+  "r": "neutral budget descriptor"
+ },
+ {
+  "w": "raises",
+  "s": 1,
+  "r": "increasing, mildly positive"
+ },
+ {
+  "w": "travel",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "insurance",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "linked",
+  "s": 0,
+  "r": "neutral association verb"
+ },
+ {
+  "w": "fourth",
+  "s": 0,
+  "r": "neutral ordinal"
+ },
+ {
+  "w": "software",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "economists",
+  "s": 0,
+  "r": "neutral participant noun"
+ },
+ {
+  "w": "performance",
+  "s": 0,
+  "r": "neutral metric noun"
+ },
+ {
+  "w": "major",
+  "s": 0,
+  "r": "neutral scale descriptor"
+ },
+ {
+  "w": "infrastructure",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "users",
+  "s": 0,
+  "r": "neutral customer noun"
+ },
+ {
+  "w": "shopping",
+  "s": 0,
+  "r": "neutral activity noun"
+ },
+ {
+  "w": "soars",
+  "s": 3,
+  "r": "sharp rise, strongly positive"
+ },
+ {
+  "w": "called",
+  "s": 0,
+  "r": "neutral statement verb"
+ },
+ {
+  "w": "equity",
+  "s": 0,
+  "r": "neutral asset noun"
+ },
+ {
+  "w": "models",
+  "s": 0,
+  "r": "neutral analytical noun"
+ },
+ {
+  "w": "current",
+  "s": 0,
+  "r": "neutral time descriptor"
+ },
+ {
+  "w": "added",
+  "s": 1,
+  "r": "gains/additions mildly positive"
+ },
+ {
+  "w": "banks",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "exchange",
+  "s": 0,
+  "r": "neutral venue noun"
+ },
+ {
+  "w": "behind",
+  "s": -1,
+  "r": "lagging, mildly negative"
+ },
+ {
+  "w": "times",
+  "s": 0,
+  "r": "neutral noun"
+ },
+ {
+  "w": "needed",
+  "s": 0,
+  "r": "neutral requirement word"
+ },
+ {
+  "w": "consumers",
+  "s": 0,
+  "r": "neutral participant noun"
+ },
+ {
+  "w": "drive",
+  "s": 0,
+  "r": "neutral causation verb"
+ },
+ {
+  "w": "taking",
+  "s": 0,
+  "r": "neutral action verb"
+ },
+ {
+  "w": "curve",
+  "s": 0,
+  "r": "neutral yield-curve noun"
+ },
+ {
+  "w": "built",
+  "s": 0,
+  "r": "neutral construction verb"
+ },
+ {
+  "w": "race",
+  "s": 0,
+  "r": "neutral competition noun"
+ },
+ {
+  "w": "half",
+  "s": 0,
+  "r": "neutral fraction noun"
+ },
+ {
+  "w": "takes",
+  "s": 0,
+  "r": "neutral action verb"
+ },
+ {
+  "w": "parks",
+  "s": 0,
+  "r": "neutral location noun"
+ },
+ {
+  "w": "remains",
+  "s": 0,
+  "r": "neutral persistence verb"
+ },
+ {
+  "w": "electric",
+  "s": 0,
+  "r": "neutral sector descriptor"
+ },
+ {
+  "w": "media",
+  "s": 0,
+  "r": "neutral sector noun"
+ },
+ {
+  "w": "states",
+  "s": 0,
+  "r": "neutral geography noun"
+ },
+ {
+  "w": "seven",
+  "s": 0,
+  "r": "neutral number"
+ },
+ {
+  "w": "led",
+  "s": 0,
+  "r": "neutral leadership verb"
+ },
+ {
+  "w": "cyclosporiasis",
+  "s": -2,
+  "r": "disease outbreak, negative for firms"
+ },
+ {
+  "w": "overshadows",
+  "s": -1,
+  "r": "eclipsing/dampening, mildly negative"
+ },
+ {
+  "w": "ends",
+  "s": 0,
+  "r": "neutral termination verb"
+ },
+ {
+  "w": "starting",
+  "s": 0,
+  "r": "neutral commencement verb"
+ },
+ {
+  "w": "rout",
+  "s": -4,
+  "r": "severe selloff, extremely negative"
+ }
+]

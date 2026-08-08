@@ -26,6 +26,10 @@ Thumbs.db
 results/**/cache/
 *.pkl
 
+# ── Lexicon-extension raw scraped corpus — NEVER commit (same rule as raw data).
+# The whole raw dir is ignored; committed derived artifacts live in results/lexicon/.
+data/lexicon_extension/
+
 # Note: results/data/*.csv and results/tables/*.csv ARE committed on purpose —
 # the deployed app reads these precomputed artifacts and cannot rebuild them
 # on the Streamlit free tier.

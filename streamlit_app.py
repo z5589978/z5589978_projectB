@@ -364,9 +364,10 @@ elif page == "Sentiment Analytics":
     render_header("Sector Sentiment Analytics",
                   "News-sentiment index across the equity sectors")
     st.caption(
-        "VADER compound score of news headlines, averaged equal-weight across the "
-        "tickers in each sector, then lagged 1 trading day to avoid look-ahead. "
-        "Score in [−1, +1]; 0 is neutral. "
+        "FinVADER-Extended compound score of news headlines (finVADER plus 20 "
+        "finance-news words mined from a fresh corpus and rated by a 10-agent panel), "
+        "averaged equal-weight across the tickers in each sector, then lagged 1 "
+        "trading day to avoid look-ahead. Score in [−1, +1]; 0 is neutral. "
         "Source: FINS3645 news_headlines.parquet, 2020–2023."
     )
 
@@ -392,7 +393,7 @@ elif page == "Sentiment Analytics":
                     color=palette[i % len(palette)])
         ax.axhline(0, color="gray", lw=0.9, ls="--")
         ax.set_xlabel("Date")
-        ax.set_ylabel(f"VADER compound score ({smooth}-day MA)")
+        ax.set_ylabel(f"FinVADER-Extended compound ({smooth}-day MA)")
         ax.spines[["top", "right"]].set_visible(False)
         ax.grid(alpha=0.25)
         ax.legend(fontsize=8, ncol=2)
