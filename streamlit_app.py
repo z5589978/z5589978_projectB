@@ -44,6 +44,11 @@ PANEL   = "#F5F7FA"   # cards / sidebar
 FONT    = ('-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, '
            'Arial, sans-serif')
 COLORWAY = [NAVY, CRIMSON, FOREST, GOLD, TEAL, VIOLET, STEEL, "#8B4513", "#2C7873", "#FF6F61"]
+# High-contrast palette for the multi-line sector chart. Ordered so the first five
+# (the default selection) are maximally distinct — no two blue-leaning colours next to
+# each other (NAVY and TEAL blur together at line weight, so TEAL is pushed later).
+SECTOR_PALETTE = [NAVY, CRIMSON, FOREST, GOLD, VIOLET, TEAL, "#E8630A", "#8B4513",
+                  STEEL, "#B5179E"]
 
 st.set_page_config(page_title="AlphaBlend", page_icon="📈", layout="wide",
                    initial_sidebar_state="expanded")
@@ -75,16 +80,21 @@ st.markdown(
     .ab-side-foot {{ color: {MUTED}; font-size: .74rem; line-height: 1.5;
         border-top: 1px solid {LINE}; padding-top: .7rem; margin-top: .4rem; }}
 
-    /* Sidebar radio -> polished nav pills */
-    section[data-testid="stSidebar"] div[role="radiogroup"] {{ gap: .25rem; }}
-    section[data-testid="stSidebar"] div[role="radiogroup"] label {{
-        display: flex; align-items: center; width: 100%; padding: .5rem .7rem;
-        border-radius: 9px; cursor: pointer; font-size: .95rem; color: {INK};
-        transition: background .12s ease, color .12s ease; }}
-    section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {{ background: #E9EEF6; }}
-    section[data-testid="stSidebar"] div[role="radiogroup"] label div:first-child {{ display: none; }}
-    section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {{
-        background: {NAVY}; color: #FFFFFF; font-weight: 600; }}
+    /* Sidebar radio -> polished nav pills (text stays visible; only the small radio
+       dot is de-emphasised — never hide the label content itself). */
+    section[data-testid="stSidebar"] div[role="radiogroup"] {{ gap: .3rem; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label {{
+        display: flex; align-items: center; gap: .4rem; width: 100%;
+        padding: .5rem .7rem; border-radius: 9px; cursor: pointer; font-size: .95rem;
+        color: {INK}; transition: background .12s ease, color .12s ease; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {{ background: #E9EEF6; }}
+    /* shrink the native radio circle so the icon+label read as the nav */
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {{
+        transform: scale(.7); opacity: .55; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {{
+        background: {NAVY}; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) * {{
+        color: #FFFFFF !important; font-weight: 600; }}
 
     /* Sliders — thicker coloured track */
     .stSlider [data-baseweb="slider"] div[role="slider"] {{ background: {NAVY}; }}
@@ -473,7 +483,8 @@ elif page == "Sentiment Analytics":
     else:
         sectors = sector_sent.columns.tolist()
         selected_sectors = st.multiselect("Sectors to display", sectors, default=sectors[:5])
-        # Preset windows + fine slider (kept in sync via session state)
+
+        # Smoothing control — presets + fine slider grouped as one card
         if "smooth" not in st.session_state:
             st.session_state.smooth = 21
 
@@ -481,21 +492,40 @@ elif page == "Sentiment Analytics":
             if st.session_state.get("smooth_preset") is not None:
                 st.session_state.smooth = int(st.session_state.smooth_preset)
 
-        st.segmented_control("Quick window", [7, 14, 21, 30, 63], format_func=lambda d: f"{d}d",
-                             key="smooth_preset", on_change=_set_preset)
-        smooth = st.slider("Rolling-mean window (trading days)", 1, 63, key="smooth")
+        ctrl, hi = st.columns([3, 2])
+        with ctrl:
+            with st.container(border=True):
+                st.markdown("**Smoothing window** — rolling average over N trading days")
+                st.segmented_control("presets", [7, 14, 21, 30, 63], format_func=lambda d: f"{d}d",
+                                     key="smooth_preset", on_change=_set_preset,
+                                     label_visibility="collapsed")
+                smooth = st.slider("Fine control (days)", 1, 63, key="smooth")
+        with hi:
+            with st.container(border=True):
+                st.markdown("**Highlight** — fade the other lines")
+                highlight = st.selectbox("highlight", ["None"] + selected_sectors,
+                                         label_visibility="collapsed",
+                                         disabled=not selected_sectors)
 
         if selected_sectors:
             fig = go.Figure()
             for i, s in enumerate(selected_sectors):
                 v = sector_sent[s].rolling(smooth).mean()
-                fig.add_trace(go.Scatter(x=v.index, y=v.values, name=s, mode="lines",
-                                         line=dict(width=1.6, color=COLORWAY[i % len(COLORWAY)]),
-                                         hovertemplate="%{y:.3f}<extra>%{fullData.name}</extra>"))
+                faded = (highlight != "None" and s != highlight)
+                fig.add_trace(go.Scatter(
+                    x=v.index, y=v.values, name=s, mode="lines",
+                    line=dict(width=1.5 if faded else 2.6,
+                              color=SECTOR_PALETTE[i % len(SECTOR_PALETTE)]),
+                    opacity=0.22 if faded else 1.0,
+                    hovertemplate="%{y:.3f}<extra>%{fullData.name}</extra>"))
             fig.add_hline(y=0, line=dict(color="gray", dash="dash", width=1))
-            apply_theme(fig, height=440)
+            apply_theme(fig, height=580)
+            fig.update_layout(hovermode="closest")   # nearest line only (this chart only)
             fig.update_yaxes(title=f"FinVADER-Extended compound ({smooth}-day MA)")
             st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
             st.caption("Sector index = equal-ticker-weight FinVADER-Extended compound, lagged 1 "
-                       "trading day (no look-ahead). This lagged series is the fund tilt's input. "
-                       "Source: FINS3645 news_headlines.parquet, 2020–2023.")
+                       "trading day (no look-ahead) — the fund tilt's input. Hover shows the "
+                       "nearest line; click a sector in the legend to toggle it, double-click to "
+                       "isolate one. Source: FINS3645 news_headlines.parquet, 2020–2023.")
+        else:
+            st.info("Select at least one sector above to draw the chart.")
