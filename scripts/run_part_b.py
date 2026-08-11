@@ -53,12 +53,13 @@ VIOLET  = "#6B5B95"
 STEEL   = "#4A5568"
 COLORS  = [NAVY, CRIMSON, FOREST, GOLD, TEAL, VIOLET, STEEL, "#8B4513"]
 
-METHOD_COLOR = {"ew": STEEL, "mv": NAVY, "ms": FOREST, "rp": CRIMSON}
+METHOD_COLOR = {"ew": STEEL, "mv": NAVY, "ms": FOREST, "rp": CRIMSON, "hrp": VIOLET}
 METHOD_LABEL = {
     "ew": "Equal Weight",
     "mv": "Min Variance",
     "ms": "Max Sharpe",
     "rp": "Risk Parity",
+    "hrp": "HRP",
 }
 
 def _style():

@@ -54,9 +54,11 @@ z5589978_projectB/
 Mark each item [ ] = not started, [~] = in progress, [x] = done.
 
 ### Funds & Backtest (15% of Part B)
-- [x] Equity-only funds × 4 methods (EW, MV, MS, RP) — starter code done
-- [x] Crypto-only funds × 4 methods — starter code done
-- [x] Combined equity+crypto funds × 4 methods — starter code done
+- [x] Equity-only funds × 5 methods (EW, MV, MS, RP, **HRP**) — 4 starter + HRP added
+- [x] Crypto-only funds × 5 methods
+- [x] Combined equity+crypto funds × 5 methods  (5 × 3 families = 15 funds)
+- [x] HRP (Hierarchical Risk Parity, López de Prado 2016) — src/portfolio.py, own
+      method; innovation: a newer optimisation method beyond the required minimum
 - [ ] Walk-forward OOS confirmed: no look-ahead, weights from past data only
 - [ ] First live date stated: 252 trading days after start (≈ 2021-01-04)
 - [ ] Rebalance frequency stated: monthly (first trading day of each month)

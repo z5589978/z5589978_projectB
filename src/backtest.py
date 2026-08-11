@@ -8,10 +8,10 @@ Design:
   - Risk-free rate    : 0 (stated assumption)
   - Transaction costs : 0 (stated assumption)
 
-Fund families and methods:
-  equity_ew      equity_mv      equity_ms      equity_rp
-  crypto_ew      crypto_mv      crypto_ms      crypto_rp
-  combined_ew    combined_mv    combined_ms    combined_rp
+Fund families and methods (5 methods x 3 families = 15 funds):
+  equity_ew    equity_mv    equity_ms    equity_rp    equity_hrp
+  crypto_ew    crypto_mv    crypto_ms    crypto_rp    crypto_hrp
+  combined_ew  combined_mv  combined_ms  combined_rp  combined_hrp
 """
 from __future__ import annotations
 
@@ -21,7 +21,8 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
-from src.portfolio import equal_weight, min_variance, max_sharpe, risk_parity
+from src.portfolio import (equal_weight, min_variance, max_sharpe, risk_parity,
+                           hierarchical_risk_parity)
 
 ESTIMATION_WINDOW = 252   # trading days
 RF = 0.0                  # risk-free rate (daily)
@@ -91,6 +92,7 @@ def _compute_weights(
 
     mu = ret_window.mean().values
     cov = ret_window.cov().values
+    corr = ret_window.corr().values   # HRP clusters on correlation structure
 
     try:
         if method == "ew":
@@ -101,6 +103,8 @@ def _compute_weights(
             w = max_sharpe(mu, cov, rf=RF)
         elif method == "rp":
             w = risk_parity(cov)
+        elif method == "hrp":
+            w = hierarchical_risk_parity(cov, corr)
         else:
             raise ValueError(f"Unknown method: {method}")
     except Exception:
@@ -176,6 +180,7 @@ def run_backtest(
         "mv": "Min Variance",
         "ms": "Max Sharpe",
         "rp": "Risk Parity",
+        "hrp": "Hierarchical Risk Parity",
     }
     family_label = {"equity": "Equity", "crypto": "Crypto", "combined": "Combined"}
     name = f"{family_label.get(family, family)} {label_map.get(method, method)}"
@@ -198,7 +203,7 @@ def run_all_funds(
 ) -> list[FundResult]:
     """Run backtests for all (family, method) combinations."""
     if methods is None:
-        methods = ["ew", "mv", "ms", "rp"]
+        methods = ["ew", "mv", "ms", "rp", "hrp"]
     if families is None:
         families = ["equity", "crypto", "combined"]
 
