@@ -3,81 +3,100 @@
 Reads precomputed artifacts from results/ only.
 Does NOT recompute backtests or run sentiment scoring at runtime.
 
+All charts are Plotly (client-rendered SVG/JS): they resize correctly at any zoom /
+fullscreen, manage date-axis tick density automatically, and add hover tooltips — a
+single shared theme (apply_theme) keeps every chart visually consistent.
+
 Pages
 -----
-1. Compare Funds       — performance table + growth-of-$1 chart across all funds
-2. Fund Fact Sheet     — detailed fact sheet for a selected fund
-3. My Allocation       — set weights across funds, see blended portfolio stats
-4. Market Fear & Greed — aggregate news fear/greed index: gauge, standardised
-                         banded history, 0-100 levels, and what it can/cannot say
-5. Sentiment Analytics — FinVADER-Extended overview, sector-level coverage
-                         evidence, and the sector sentiment index over time
+1. Compare Funds       — performance table + growth-of-$1 chart across all 15 funds
+2. Fund Fact Sheet     — two-step (family -> method) fund fact sheet
+3. My Allocation       — blend funds, see combined statistics
+4. Market Fear & Greed — aggregate news fear/greed gauge + standardised banded history
+5. Sentiment Analytics — FinVADER-Extended overview, coverage evidence, sector index
 """
 from __future__ import annotations
 
 import pathlib
 import pandas as pd
 import streamlit as st
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 ROOT = pathlib.Path(__file__).parent
 DATA = ROOT / "results" / "data"
 TABLES = ROOT / "results" / "tables"
-FIGURES = ROOT / "results" / "figures"
+LEXICON = ROOT / "results" / "lexicon"
 
 # ── AlphaBlend design system ─────────────────────────────────────────────────
-# One coherent palette + typography used across every page, applied through a
-# single CSS block and a shared header helper, so the app reads as a designed
-# product rather than default Streamlit with a few colours added.
 NAVY    = "#1F3A5F"   # primary
 NAVY2   = "#2A4E7E"   # header gradient end
 CRIMSON = "#B23A48"   # loss / negative
 FOREST  = "#2E7D32"   # gain / positive
 GOLD    = "#C99700"   # accent
+TEAL    = "#007C89"
+VIOLET  = "#6B5B95"
+STEEL   = "#4A5568"
 INK     = "#1A2233"   # body text
 MUTED   = "#5B6472"   # secondary text
-LINE    = "#E4E8EF"   # borders
+LINE    = "#E4E8EF"   # borders / gridlines
 PANEL   = "#F5F7FA"   # cards / sidebar
+FONT    = ('-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, '
+           'Arial, sans-serif')
+COLORWAY = [NAVY, CRIMSON, FOREST, GOLD, TEAL, VIOLET, STEEL, "#8B4513", "#2C7873", "#FF6F61"]
 
-st.set_page_config(
-    page_title="AlphaBlend",
-    page_icon="📈",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+st.set_page_config(page_title="AlphaBlend", page_icon="📈", layout="wide",
+                   initial_sidebar_state="expanded")
 
 st.markdown(
     f"""
     <style>
-    html, body, [class*="css"] {{
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                     Helvetica, Arial, sans-serif;
-    }}
+    html, body, [class*="css"] {{ font-family: {FONT}; }}
     .stApp {{ background-color: #FFFFFF; color: {INK}; }}
     h1, h2, h3 {{ color: {NAVY}; letter-spacing: .2px; }}
+    .block-container {{ padding-top: 2.2rem; }}
 
-    /* Branded hero header, one per page */
-    .ab-hero {{
-        background: linear-gradient(90deg, {NAVY} 0%, {NAVY2} 100%);
-        color: #FFFFFF; padding: 1.05rem 1.35rem; border-radius: 12px;
-        margin-bottom: 1.15rem;
-    }}
+    /* Branded hero header */
+    .ab-hero {{ background: linear-gradient(90deg, {NAVY} 0%, {NAVY2} 100%);
+        color: #FFFFFF; padding: 1.05rem 1.35rem; border-radius: 12px; margin-bottom: 1.15rem; }}
     .ab-hero h1 {{ color: #FFFFFF; margin: 0; font-size: 1.55rem; font-weight: 700; }}
     .ab-hero p  {{ color: #D7E0EC; margin: .28rem 0 0; font-size: .9rem; }}
 
     /* Metric cards */
-    [data-testid="stMetric"] {{
-        background: {PANEL}; border: 1px solid {LINE};
-        border-radius: 10px; padding: .7rem .9rem;
-    }}
+    [data-testid="stMetric"] {{ background: {PANEL}; border: 1px solid {LINE};
+        border-radius: 10px; padding: .7rem .9rem; }}
     [data-testid="stMetricLabel"] p {{ color: {MUTED}; font-size: .8rem; }}
     [data-testid="stMetricValue"] {{ color: {NAVY}; font-weight: 700; }}
 
-    /* Sidebar + tables */
-    section[data-testid="stSidebar"] {{
-        background: {PANEL}; border-right: 1px solid {LINE};
-    }}
+    /* Sidebar */
+    section[data-testid="stSidebar"] {{ background: {PANEL}; border-right: 1px solid {LINE}; }}
+    .ab-brand {{ font-size: 1.25rem; font-weight: 800; color: {NAVY}; margin: .2rem 0 0; }}
+    .ab-brand-sub {{ color: {MUTED}; font-size: .78rem; margin-bottom: .6rem; }}
+    .ab-side-foot {{ color: {MUTED}; font-size: .74rem; line-height: 1.5;
+        border-top: 1px solid {LINE}; padding-top: .7rem; margin-top: .4rem; }}
+
+    /* Sidebar radio -> polished nav pills */
+    section[data-testid="stSidebar"] div[role="radiogroup"] {{ gap: .25rem; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] label {{
+        display: flex; align-items: center; width: 100%; padding: .5rem .7rem;
+        border-radius: 9px; cursor: pointer; font-size: .95rem; color: {INK};
+        transition: background .12s ease, color .12s ease; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:hover {{ background: #E9EEF6; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] label div:first-child {{ display: none; }}
+    section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {{
+        background: {NAVY}; color: #FFFFFF; font-weight: 600; }}
+
+    /* Sliders — thicker coloured track */
+    .stSlider [data-baseweb="slider"] div[role="slider"] {{ background: {NAVY}; }}
+    .stSlider [data-baseweb="slider"] > div > div > div {{ background: {NAVY}; }}
+
+    /* Multiselect chips + segmented control */
+    span[data-baseweb="tag"] {{ background-color: {NAVY} !important; border-radius: 7px; }}
+
+    /* Tables / alerts / expander */
     [data-testid="stDataFrame"] {{ border: 1px solid {LINE}; border-radius: 10px; }}
-    .ab-side-foot {{ color: {MUTED}; font-size: .74rem; line-height: 1.4; }}
+    [data-testid="stExpander"] {{ border: 1px solid {LINE}; border-radius: 10px; }}
+    [data-testid="stAlert"] {{ border-radius: 10px; }}
     </style>
     """,
     unsafe_allow_html=True,
@@ -85,55 +104,62 @@ st.markdown(
 
 
 def render_header(title: str, subtitle: str) -> None:
-    """Branded hero header used at the top of every page."""
-    st.markdown(
-        f'<div class="ab-hero"><h1>{title}</h1><p>{subtitle}</p></div>',
-        unsafe_allow_html=True,
+    st.markdown(f'<div class="ab-hero"><h1>{title}</h1><p>{subtitle}</p></div>',
+                unsafe_allow_html=True)
+
+
+def apply_theme(fig: go.Figure, height: int | None = None) -> go.Figure:
+    """Shared Plotly theme so every chart matches the app's palette + type."""
+    fig.update_layout(
+        template="plotly_white", font=dict(family=FONT, size=13, color=INK),
+        colorway=COLORWAY, paper_bgcolor="white", plot_bgcolor="white",
+        margin=dict(l=12, r=12, t=16, b=12), hovermode="x unified",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, font=dict(size=11),
+                    bgcolor="rgba(0,0,0,0)"),
     )
+    fig.update_xaxes(gridcolor=LINE, zeroline=False, showline=False)
+    fig.update_yaxes(gridcolor=LINE, zeroline=False, showline=False)
+    if height:
+        fig.update_layout(height=height)
+    return fig
+
+
+PLOTLY_CFG = {"displayModeBar": False, "responsive": True}
+
+
+def gauge_figure(z: float, band: str) -> go.Figure:
+    """Native Plotly fear/greed dial (go.Indicator): resizes cleanly, hover-free."""
+    steps = [
+        {"range": [-3, -1.5], "color": BAND_COLORS["Extreme fear"]},
+        {"range": [-1.5, -0.5], "color": BAND_COLORS["Fear"]},
+        {"range": [-0.5, 0.5], "color": BAND_COLORS["Neutral"]},
+        {"range": [0.5, 1.5], "color": BAND_COLORS["Greed"]},
+        {"range": [1.5, 3], "color": BAND_COLORS["Extreme greed"]},
+    ]
+    col = BAND_COLORS.get(band, INK)
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number+delta", value=round(z, 2),
+        number={"prefix": "z = ", "font": {"size": 30, "color": col}},
+        delta={"reference": 0, "increasing": {"color": FOREST}, "decreasing": {"color": CRIMSON}},
+        title={"text": f"<b>{band}</b>", "font": {"size": 18, "color": col}},
+        gauge={
+            "axis": {"range": [-3, 3], "tickvals": [-3, -1.5, -0.5, 0.5, 1.5, 3],
+                     "tickfont": {"size": 10, "color": MUTED}},
+            "bar": {"color": "rgba(0,0,0,0)"},
+            "steps": steps, "bgcolor": "white", "borderwidth": 0,
+            "threshold": {"line": {"color": INK, "width": 4}, "thickness": 0.85, "value": round(z, 2)},
+        },
+    ))
+    fig.update_layout(height=300, margin=dict(l=24, r=24, t=54, b=6),
+                      paper_bgcolor="white", font=dict(family=FONT, color=INK))
+    return fig
 
 
 # ── Data loading (cached) ─────────────────────────────────────────────────────
 @st.cache_data(ttl=3600)
-def load_fund_returns() -> pd.DataFrame:
-    path = DATA / "fund_returns.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path, index_col="date", parse_dates=True)
-    return df
-
-
-@st.cache_data(ttl=3600)
-def load_fund_weights() -> pd.DataFrame:
-    path = DATA / "fund_weights.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path, parse_dates=["date"])
-    return df
-
-
-@st.cache_data(ttl=3600)
-def load_performance_metrics() -> pd.DataFrame:
-    path = TABLES / "performance_metrics.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    return pd.read_csv(path)
-
-
-@st.cache_data(ttl=3600)
-def load_sector_sentiment() -> pd.DataFrame:
-    path = DATA / "sector_sentiment_index.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path, index_col="date", parse_dates=True)
-    return df
-
-
-@st.cache_data(ttl=3600)
-def load_aggregate_sentiment() -> pd.DataFrame:
-    path = DATA / "aggregate_sentiment_index.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    return pd.read_csv(path, index_col="date", parse_dates=True)
+def load_indexed(path: pathlib.Path) -> pd.DataFrame:
+    return (pd.read_csv(path, index_col="date", parse_dates=True)
+            if path.exists() else pd.DataFrame())
 
 
 @st.cache_data(ttl=3600)
@@ -146,237 +172,154 @@ def _row_count(path: pathlib.Path) -> int:
     return 0 if df.empty else len(df)
 
 
-# ── Fear/greed band colours (extreme fear -> extreme greed) ───────────────────
 BAND_COLORS = {
     "Extreme fear": "#8C1D2B", "Fear": "#D97A3D", "Neutral": "#9AA5B1",
     "Greed": "#5FA06E", "Extreme greed": "#2E7D32",
 }
+METHOD_NAMES = {"ew": "Equal Weight", "mv": "Min Variance", "ms": "Max Sharpe",
+                "rp": "Risk Parity", "hrp": "Hierarchical Risk Parity"}
 
+fund_returns = load_indexed(DATA / "fund_returns.csv")
+fund_weights = load_csv(DATA / "fund_weights.csv")
+if not fund_weights.empty:
+    fund_weights["date"] = pd.to_datetime(fund_weights["date"])
+metrics      = load_csv(TABLES / "performance_metrics.csv")
+sector_sent  = load_indexed(DATA / "sector_sentiment_index.csv")
+agg_sent     = load_indexed(DATA / "aggregate_sentiment_index.csv")
+DATA_MISSING = fund_returns.empty or metrics.empty
 
-def draw_gauge(z: float, band: str):
-    """Semicircular fear/greed dial: coloured band arcs with a needle at the current
-    standardised z (clipped to [-3, 3]). The app's custom design-system centrepiece."""
-    import matplotlib.pyplot as plt
-    from matplotlib.patches import Wedge
-    import numpy as np
-
-    def z_to_angle(zz):  # z in [-3,3] -> 180deg (left/fear) .. 0deg (right/greed)
-        return 180.0 - (np.clip(zz, -3, 3) + 3) * 30.0
-
-    fig, ax = plt.subplots(figsize=(6.4, 3.6))
-    bounds = [(-3, -1.5, "Extreme fear"), (-1.5, -0.5, "Fear"), (-0.5, 0.5, "Neutral"),
-              (0.5, 1.5, "Greed"), (1.5, 3, "Extreme greed")]
-    for lo, hi, name in bounds:
-        ax.add_patch(Wedge((0, 0), 1.0, z_to_angle(hi), z_to_angle(lo),
-                           width=0.32, facecolor=BAND_COLORS[name], edgecolor="white", lw=2))
-    # needle
-    ang = np.radians(z_to_angle(z))
-    ax.plot([0, 0.82 * np.cos(ang)], [0, 0.82 * np.sin(ang)], color=INK, lw=3, solid_capstyle="round")
-    ax.add_patch(plt.Circle((0, 0), 0.045, color=INK, zorder=5))
-    ax.text(0, -0.14, band, ha="center", va="center", fontsize=15,
-            fontweight="bold", color=BAND_COLORS.get(band, INK))
-    ax.text(0, -0.30, f"z = {z:+.2f}", ha="center", va="center", fontsize=11, color=MUTED)
-    ax.text(-1.02, -0.02, "Fear", ha="right", fontsize=8, color=MUTED)
-    ax.text(1.02, -0.02, "Greed", ha="left", fontsize=8, color=MUTED)
-    ax.set_xlim(-1.25, 1.25); ax.set_ylim(-0.42, 1.1); ax.set_aspect("equal"); ax.axis("off")
-    return fig
-
-
-# ── Sidebar navigation ────────────────────────────────────────────────────────
-st.sidebar.markdown("## 📈 **AlphaBlend**")
-st.sidebar.markdown("*Systematic multi-asset investing*")
-st.sidebar.divider()
-
-page = st.sidebar.radio(
-    "Navigate",
-    ["Compare Funds", "Fund Fact Sheet", "My Allocation",
-     "Market Fear & Greed", "Sentiment Analytics"],
-)
-
-st.sidebar.divider()
+# ── Sidebar: brand + polished nav ─────────────────────────────────────────────
+st.sidebar.markdown('<div class="ab-brand">📈 AlphaBlend</div>'
+                    '<div class="ab-brand-sub">Systematic multi-asset investing</div>',
+                    unsafe_allow_html=True)
+NAV = {
+    "📊  Compare Funds": "Compare Funds",
+    "📄  Fund Fact Sheet": "Fund Fact Sheet",
+    "🎯  My Allocation": "My Allocation",
+    "😨  Market Fear & Greed": "Market Fear & Greed",
+    "📰  Sentiment Analytics": "Sentiment Analytics",
+}
+choice = st.sidebar.radio("Navigate", list(NAV), label_visibility="collapsed")
+page = NAV[choice]
 st.sidebar.markdown(
     '<div class="ab-side-foot">Out-of-sample backtest, 2021–2023.<br>'
     "252-day window · monthly rebalance · rf = 0.<br>"
-    "All figures read precomputed results.</div>",
-    unsafe_allow_html=True,
-)
+    "All figures read precomputed results.</div>", unsafe_allow_html=True)
 
-fund_returns = load_fund_returns()
-fund_weights = load_fund_weights()
-metrics      = load_performance_metrics()
-sector_sent  = load_sector_sentiment()
-agg_sent     = load_aggregate_sentiment()
 
-DATA_MISSING = fund_returns.empty or metrics.empty
+def growth_of_dollar(returns: pd.Series):
+    return (1 + returns.dropna()).cumprod()
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Page 1: Compare Funds
 # ═══════════════════════════════════════════════════════════════════════════
 if page == "Compare Funds":
-    render_header("Compare Funds",
-                  "Out-of-sample performance across every fund and method")
-    st.caption(
-        "Out-of-sample backtested performance (2021–2023). "
-        "Estimation window: 252 trading days. Monthly rebalance. Risk-free rate: 0."
-    )
-
+    render_header("Compare Funds", "Out-of-sample performance across every fund and method")
+    st.caption("Out-of-sample backtested performance (2021–2023). Estimation window: "
+               "252 trading days. Monthly rebalance. Risk-free rate: 0.")
     if DATA_MISSING:
-        st.warning("Run `python scripts/run_part_b.py` to generate results.")
-        st.stop()
+        st.warning("Run `python scripts/run_part_b.py` to generate results."); st.stop()
 
-    # Filter controls
-    families = ["All"] + sorted(metrics["family"].unique().tolist()) if "family" in metrics.columns else ["All"]
-    fam = st.selectbox("Asset family", families)
-    if fam != "All":
-        m = metrics[metrics["family"] == fam]
-    else:
-        m = metrics
+    families = ["All"] + sorted(metrics["family"].unique().tolist())
+    fam = st.segmented_control("Asset family", families, default="All") or "All"
+    m = metrics if fam == "All" else metrics[metrics["family"] == fam]
 
-    # Performance table
     st.subheader("Performance metrics")
-    display_cols = ["fund", "ann_return", "ann_vol", "sharpe", "max_drawdown"]
-    display_cols = [c for c in display_cols if c in m.columns]
-    fmt_map = {
-        "ann_return":   "{:.1%}",
-        "ann_vol":      "{:.1%}",
-        "sharpe":       "{:.2f}",
-        "max_drawdown": "{:.1%}",
-    }
-    st.dataframe(
-        m[display_cols].style.format({k: v for k, v in fmt_map.items() if k in display_cols}),
-        width="stretch",
-        hide_index=True,
-    )
+    cols = [c for c in ["fund", "ann_return", "ann_vol", "sharpe", "max_drawdown"] if c in m.columns]
+    fmt = {"ann_return": "{:.1%}", "ann_vol": "{:.1%}", "sharpe": "{:.2f}", "max_drawdown": "{:.1%}"}
+    st.dataframe(m[cols].style.format({k: v for k, v in fmt.items() if k in cols})
+                 .background_gradient(cmap="Blues", subset=[c for c in ["sharpe"] if c in cols]),
+                 width="stretch", hide_index=True)
 
-    # Growth of $1
     st.subheader("Growth of $1 (out-of-sample)")
-    import matplotlib.pyplot as plt
-    import matplotlib.ticker as mticker
-
-    if fam != "All":
-        funds_to_plot = [c for c in fund_returns.columns if fam.lower() in c.lower()]
-    else:
-        funds_to_plot = fund_returns.columns.tolist()
-
-    if funds_to_plot:
-        fig, ax = plt.subplots(figsize=(11, 4))
-        palette = [NAVY, CRIMSON, FOREST, GOLD, "#007C89", "#6B5B95", "#4A5568", "#8B4513"]
-        for i, col in enumerate(funds_to_plot):
-            wealth = (1 + fund_returns[col].dropna()).cumprod()
-            ax.plot(wealth.index, wealth.values, label=col, lw=1.5,
-                    color=palette[i % len(palette)])
-        ax.axhline(1, color="gray", lw=0.7, ls="--")
-        ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("$%.2f"))
-        ax.set_xlabel("Date")
-        ax.set_ylabel("Growth of $1")
-        ax.spines[["top", "right"]].set_visible(False)
-        ax.grid(alpha=0.25)
-        ax.legend(fontsize=7, ncol=3)
-        st.pyplot(fig)
-        plt.close(fig)
+    to_plot = (fund_returns.columns.tolist() if fam == "All"
+               else [c for c in fund_returns.columns if fam.lower() in c.lower()])
+    if to_plot:
+        fig = go.Figure()
+        for col in to_plot:
+            w = growth_of_dollar(fund_returns[col])
+            fig.add_trace(go.Scatter(x=w.index, y=w.values, name=col, mode="lines",
+                                     hovertemplate="%{y:$.2f}<extra>%{fullData.name}</extra>"))
+        fig.add_hline(y=1, line=dict(color="gray", dash="dash", width=1))
+        apply_theme(fig, height=440)
+        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f")
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Page 2: Fund Fact Sheet
+# Page 2: Fund Fact Sheet  (two-step: family -> method)
 # ═══════════════════════════════════════════════════════════════════════════
 elif page == "Fund Fact Sheet":
-    render_header("Fund Fact Sheet",
-                  "Growth, drawdown, and current target weights for one fund")
-
+    render_header("Fund Fact Sheet", "Pick an asset family, then a method")
     if DATA_MISSING:
-        st.warning("Run `python scripts/run_part_b.py` to generate results.")
-        st.stop()
+        st.warning("Run `python scripts/run_part_b.py` to generate results."); st.stop()
 
-    fund_names = metrics["fund"].tolist() if "fund" in metrics.columns else []
-    selected = st.selectbox("Select a fund", fund_names)
+    fam_key = (st.segmented_control("Asset family", ["Equity", "Crypto", "Combined"],
+                                    default="Equity") or "Equity").lower()
+    fam_df = metrics[metrics["family"] == fam_key]
+    order = ["ew", "mv", "ms", "rp", "hrp"]
+    opts = [METHOD_NAMES[mth] for mth in order if mth in set(fam_df["method"])]
+    disp = st.selectbox("Method", opts)
+    inv = {v: k for k, v in METHOD_NAMES.items()}
+    row = fam_df[fam_df["method"] == inv[disp]].iloc[0]
+    selected = row["fund"]
 
-    if selected:
-        row = metrics[metrics["fund"] == selected].iloc[0]
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("Ann. Return", f"{row.get('ann_return', 0):.1%}")
+    c2.metric("Ann. Volatility", f"{row.get('ann_vol', 0):.1%}")
+    c3.metric("Sharpe Ratio", f"{row.get('sharpe', 0):.2f}")
+    c4.metric("Max Drawdown", f"{row.get('max_drawdown', 0):.1%}")
+    st.caption(f"{selected} — out-of-sample {row.get('start_date','N/A')} to "
+               f"{row.get('end_date','N/A')} ({row.get('n_days','?')} trading days).")
 
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("Ann. Return",   f"{row.get('ann_return', 0):.1%}")
-        col2.metric("Ann. Volatility", f"{row.get('ann_vol', 0):.1%}")
-        col3.metric("Sharpe Ratio",  f"{row.get('sharpe', 0):.2f}")
-        col4.metric("Max Drawdown",  f"{row.get('max_drawdown', 0):.1%}")
+    if selected in fund_returns.columns:
+        r = fund_returns[selected].dropna()
+        wealth = (1 + r).cumprod()
+        dd = (wealth - wealth.cummax()) / wealth.cummax()
+        fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.07,
+                            row_heights=[0.62, 0.38],
+                            subplot_titles=("Growth of $1", "Drawdown"))
+        fig.add_trace(go.Scatter(x=wealth.index, y=wealth.values, mode="lines",
+                                 line=dict(color=NAVY, width=2), name="Growth",
+                                 hovertemplate="%{y:$.2f}<extra></extra>"), row=1, col=1)
+        fig.add_hline(y=1, line=dict(color="gray", dash="dash", width=1), row=1, col=1)
+        fig.add_trace(go.Scatter(x=dd.index, y=dd.values, mode="lines", fill="tozeroy",
+                                 line=dict(color=CRIMSON, width=1.4), name="Drawdown",
+                                 hovertemplate="%{y:.1%}<extra></extra>"), row=2, col=1)
+        apply_theme(fig, height=520)
+        fig.update_layout(showlegend=False)
+        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f", row=1, col=1)
+        fig.update_yaxes(title="Drawdown", tickformat=".0%", row=2, col=1)
+        for a in fig.layout.annotations:
+            a.font.update(size=12, color=NAVY)
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
 
-        st.caption(
-            f"Out-of-sample period: {row.get('start_date', 'N/A')} to "
-            f"{row.get('end_date', 'N/A')} ({row.get('n_days', '?')} trading days)."
-        )
-
-        # Growth of $1 + Drawdown
-        import matplotlib.pyplot as plt
-        import matplotlib.ticker as mticker
-        import numpy as np
-
-        if selected in fund_returns.columns:
-            r = fund_returns[selected].dropna()
-            wealth = (1 + r).cumprod()
-            dd = (wealth - wealth.cummax()) / wealth.cummax()
-
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 5), sharex=True)
-            ax1.plot(wealth.index, wealth.values, color=NAVY, lw=1.8)
-            ax1.axhline(1, color="gray", lw=0.7, ls="--")
-            ax1.set_ylabel("Growth of $1")
-            ax1.yaxis.set_major_formatter(mticker.FormatStrFormatter("$%.2f"))
-            ax1.spines[["top", "right"]].set_visible(False)
-            ax1.grid(alpha=0.25)
-
-            ax2.fill_between(dd.index, dd.values, 0, alpha=0.25, color=CRIMSON)
-            ax2.plot(dd.index, dd.values, color=CRIMSON, lw=1.4)
-            ax2.axhline(0, color="gray", lw=0.8)
-            ax2.set_ylabel("Drawdown")
-            ax2.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
-            ax2.spines[["top", "right"]].set_visible(False)
-            ax2.grid(alpha=0.25)
-            ax2.set_xlabel("Date")
-
-            fig.suptitle(f"{selected} — Fact Sheet", fontsize=12, fontweight="bold", color=NAVY)
-            st.pyplot(fig)
-            plt.close(fig)
-
-        # Current holdings
-        st.subheader("Current target weights (last rebalance)")
-        if not fund_weights.empty and "fund" in fund_weights.columns:
-            fw = fund_weights[fund_weights["fund"] == selected]
-            if not fw.empty:
-                last_date = fw["date"].max()
-                latest = fw[fw["date"] == last_date][["ticker", "weight"]].sort_values(
-                    "weight", ascending=False
-                )
-                st.caption(f"Weights as of {last_date.date()}. Long-only, sum = 1.")
-                st.dataframe(
-                    latest.style.format({"weight": "{:.1%}"}),
-                    width="stretch",
-                    hide_index=True,
-                )
+    st.subheader("Current target weights (last rebalance)")
+    if not fund_weights.empty and "fund" in fund_weights.columns:
+        fw = fund_weights[fund_weights["fund"] == selected]
+        if not fw.empty:
+            last = fw["date"].max()
+            latest = fw[fw["date"] == last][["ticker", "weight"]].sort_values("weight", ascending=False)
+            st.caption(f"Weights as of {last.date()}. Long-only, sum = 1.")
+            st.dataframe(latest.style.format({"weight": "{:.1%}"}), width="stretch", hide_index=True)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Page 3: My Allocation
 # ═══════════════════════════════════════════════════════════════════════════
 elif page == "My Allocation":
-    render_header("My Allocation",
-                  "Blend funds into a portfolio and see the combined statistics")
-    st.markdown("Set the percentage you want to allocate across funds. The blended portfolio statistics update automatically.")
-
+    render_header("My Allocation", "Blend funds into a portfolio and see the combined statistics")
+    st.markdown("Set the percentage to allocate across funds; the blended statistics update automatically.")
     if DATA_MISSING:
-        st.warning("Run `python scripts/run_part_b.py` to generate results.")
-        st.stop()
+        st.warning("Run `python scripts/run_part_b.py` to generate results."); st.stop()
 
-    import numpy as np
-
-    fund_names = fund_returns.columns.tolist()
-    allocs = {}
-    st.subheader("Allocation sliders (%)")
-
-    cols = st.columns(2)
-    for i, fn in enumerate(fund_names):
+    allocs, cols = {}, st.columns(2)
+    for i, fn in enumerate(fund_returns.columns.tolist()):
         with cols[i % 2]:
             allocs[fn] = st.slider(fn, 0, 100, 0, key=f"alloc_{fn}")
-
     total = sum(allocs.values())
+
     if total == 0:
         st.info("Set allocations above to see blended portfolio statistics.")
     elif total != 100:
@@ -384,50 +327,35 @@ elif page == "My Allocation":
     else:
         weights = pd.Series({k: v / 100.0 for k, v in allocs.items() if v > 0})
         common = fund_returns.columns.intersection(weights.index)
-        # Only span dates where every selected fund is live. Funds have different
-        # inception dates (crypto funds start earlier than equity/combined), so a
-        # blend must start when the last-launched selected fund does — otherwise
-        # early rows would report a partial-portfolio return.
+        # Blend only over dates where every selected fund is live (funds have different
+        # inception dates), else early rows would report a partial-portfolio return.
         r = fund_returns[common].dropna(how="any")
         blended = (r * weights[common]).sum(axis=1)
         wealth = (1 + blended).cumprod()
-        ann_r = blended.mean() * 252
-        ann_v = blended.std() * (252 ** 0.5)
+        ann_r, ann_v = blended.mean() * 252, blended.std() * (252 ** 0.5)
         sharpe = ann_r / ann_v if ann_v > 0 else 0
-        dd = (wealth - wealth.cummax()) / wealth.cummax()
-        mdd = dd.min()
+        mdd = ((wealth - wealth.cummax()) / wealth.cummax()).min()
 
         st.subheader("Blended portfolio")
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Ann. Return",    f"{ann_r:.1%}")
-        c2.metric("Ann. Volatility", f"{ann_v:.1%}")
-        c3.metric("Sharpe",         f"{sharpe:.2f}")
-        c4.metric("Max Drawdown",   f"{mdd:.1%}")
-
-        import matplotlib.pyplot as plt
-        fig, ax = plt.subplots(figsize=(10, 3.5))
-        ax.plot(wealth.index, wealth.values, color=NAVY, lw=1.8, label="My allocation")
-        ax.axhline(1, color="gray", lw=0.7, ls="--")
-        ax.set_ylabel("Growth of $1")
-        ax.set_xlabel("Date")
-        ax.spines[["top", "right"]].set_visible(False)
-        ax.grid(alpha=0.25)
-        st.pyplot(fig)
-        plt.close(fig)
+        k1, k2, k3, k4 = st.columns(4)
+        k1.metric("Ann. Return", f"{ann_r:.1%}"); k2.metric("Ann. Volatility", f"{ann_v:.1%}")
+        k3.metric("Sharpe", f"{sharpe:.2f}"); k4.metric("Max Drawdown", f"{mdd:.1%}")
+        fig = go.Figure(go.Scatter(x=wealth.index, y=wealth.values, mode="lines",
+                                   line=dict(color=NAVY, width=2), name="My allocation",
+                                   hovertemplate="%{y:$.2f}<extra></extra>"))
+        fig.add_hline(y=1, line=dict(color="gray", dash="dash", width=1))
+        apply_theme(fig, height=380)
+        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f")
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Page 4: Market Fear & Greed (aggregate index — the sentiment centrepiece)
+# Page 4: Market Fear & Greed
 # ═══════════════════════════════════════════════════════════════════════════
 elif page == "Market Fear & Greed":
-    render_header("Market Fear & Greed",
-                  "A news-only fear/greed index across all 50 equities")
-
+    render_header("Market Fear & Greed", "A news-only fear/greed index across all 50 equities")
     if agg_sent.empty:
-        st.warning("Run `python scripts/run_part_b.py` to generate the aggregate index.")
-        st.stop()
-
-    import matplotlib.pyplot as plt
+        st.warning("Run `python scripts/run_part_b.py` to generate the aggregate index."); st.stop()
 
     latest = agg_sent.dropna(subset=["z_expanding"]).iloc[-1]
     z_now, band_now = float(latest["z_expanding"]), str(latest["band"])
@@ -436,76 +364,82 @@ elif page == "Market Fear & Greed":
     left, right = st.columns([1, 1])
     with left:
         st.subheader("Where the market stands today")
-        st.pyplot(draw_gauge(z_now, band_now))
-        st.caption(
-            f"As of {agg_sent.index[-1].date()}. The needle shows the standardised "
-            f"index (expanding-window z); today reads **{band_now}**."
-        )
+        st.plotly_chart(gauge_figure(z_now, band_now), use_container_width=True, config=PLOTLY_CFG)
+        st.caption(f"As of {agg_sent.index[-1].date()}. Needle = standardised index "
+                   f"(expanding-window z); today reads **{band_now}**. δ vs a neutral z = 0.")
     with right:
         st.subheader("Standardised index over time")
         zroll = agg_sent["z_expanding"].rolling(21).mean()
-        fig, ax = plt.subplots(figsize=(6.6, 3.9))
-        ax.axhspan(1.5, 4, color=BAND_COLORS["Extreme greed"], alpha=0.12)
-        ax.axhspan(-4, -1.5, color=BAND_COLORS["Extreme fear"], alpha=0.12)
-        ax.plot(agg_sent.index, agg_sent["z_expanding"], color="#9AA5B1", lw=0.5, alpha=0.6)
-        ax.plot(zroll.index, zroll.values, color=NAVY, lw=1.8)
-        ax.axhline(0, color="gray", lw=0.9, ls="--")
-        ax.set_ylim(-3, 3); ax.set_ylabel("Standardised (z, expanding)"); ax.set_xlabel("Date")
-        ax.spines[["top", "right"]].set_visible(False); ax.grid(alpha=0.25)
-        st.pyplot(fig); plt.close(fig)
+        fig = go.Figure()
+        fig.add_hrect(y0=1.5, y1=4, fillcolor=BAND_COLORS["Extreme greed"], opacity=0.10, line_width=0)
+        fig.add_hrect(y0=-4, y1=-1.5, fillcolor=BAND_COLORS["Extreme fear"], opacity=0.10, line_width=0)
+        fig.add_trace(go.Scatter(x=agg_sent.index, y=agg_sent["z_expanding"], mode="lines",
+                                 line=dict(color="#9AA5B1", width=0.6), name="daily", opacity=0.6,
+                                 hoverinfo="skip"))
+        fig.add_trace(go.Scatter(x=zroll.index, y=zroll.values, mode="lines",
+                                 line=dict(color=NAVY, width=2), name="21-day avg",
+                                 hovertemplate="z = %{y:.2f}<extra></extra>"))
+        fig.add_hline(y=0, line=dict(color="gray", dash="dash", width=1))
+        apply_theme(fig, height=340)
+        fig.update_layout(showlegend=False)
+        fig.update_yaxes(title="Standardised (z)", range=[-3, 3])
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
         st.caption("21-day average of the look-ahead-safe standardised index. "
                    "Shaded = unusually greedy (top) / fearful (bottom).")
 
     with st.expander("Why standardise? (the raw 0–100 level barely moves)"):
         st.markdown(
-            f"On the raw 0–100 fear/greed scale the index sits **above 50 on "
-            f"{100 - below50:.0f}% of days** — the news is mildly positive on average, so "
-            "the level alone reads 'greed' almost every day and says nothing. Standardising "
-            "against the index's own history (z-score) is what separates *relatively* "
-            "fearful from greedy days. The z uses an **expanding window** (only data up to "
-            "each date), so it never peeks ahead.")
-        fig, ax = plt.subplots(figsize=(11, 3))
+            f"On the raw 0–100 scale the index sits **above 50 on {100 - below50:.0f}% of "
+            "days** — the news is mildly positive on average, so the level reads 'greed' almost "
+            "every day and says nothing. Standardising against the index's own history (z-score) "
+            "separates *relatively* fearful from greedy days, using an **expanding window** so it "
+            "never peeks ahead.")
         roll100 = agg_sent["score_100"].rolling(21).mean()
-        ax.plot(agg_sent.index, agg_sent["score_100"], color="#9AA5B1", lw=0.5, alpha=0.5)
-        ax.plot(roll100.index, roll100.values, color=GOLD, lw=1.8)
-        ax.axhline(50, color=CRIMSON, lw=0.9, ls="--")
-        ax.set_ylabel("Index (0–100)"); ax.set_xlabel("Date")
-        ax.spines[["top", "right"]].set_visible(False); ax.grid(alpha=0.25)
-        st.pyplot(fig); plt.close(fig)
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=agg_sent.index, y=agg_sent["score_100"], mode="lines",
+                                 line=dict(color="#9AA5B1", width=0.6), opacity=0.5,
+                                 name="daily", hoverinfo="skip"))
+        fig.add_trace(go.Scatter(x=roll100.index, y=roll100.values, mode="lines",
+                                 line=dict(color=GOLD, width=2), name="21-day avg",
+                                 hovertemplate="%{y:.1f}<extra></extra>"))
+        fig.add_hline(y=50, line=dict(color=CRIMSON, dash="dash", width=1))
+        apply_theme(fig, height=280)
+        fig.update_layout(showlegend=False)
+        fig.update_yaxes(title="Index (0–100)")
+        st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
 
     st.subheader("What this index can — and cannot — tell you")
-    c1, c2 = st.columns(2)
-    c1.markdown(
-        "**It can**\n\n"
-        "- average many noisy headlines into one readable number\n"
-        "- be standardised to flag relatively fearful / greedy days\n"
-        "- line up with known events once standardised")
-    c2.markdown(
-        "**It cannot**\n\n"
-        "- judge whether a headline is true or important\n"
-        "- always get the sign right (headline sentiment is a noisy proxy)\n"
-        "- serve as a standalone buy / sell rule")
+    a, b = st.columns(2)
+    with a:
+        st.success("**It can**")
+        st.markdown("- average many noisy headlines into one readable number\n"
+                    "- be standardised to flag relatively fearful / greedy days\n"
+                    "- line up with known events once standardised")
+    with b:
+        st.error("**It cannot**")
+        st.markdown("- judge whether a headline is true or important\n"
+                    "- always get the sign right (headline sentiment is a noisy proxy)\n"
+                    "- serve as a standalone buy / sell rule")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Page 5: Sentiment Analytics (FinVADER-Extended + sector view + coverage)
+# Page 5: Sentiment Analytics
 # ═══════════════════════════════════════════════════════════════════════════
 elif page == "Sentiment Analytics":
     render_header("Sentiment Analytics",
                   "FinVADER-Extended, the coverage evidence, and the sector index")
 
-    # ── What we built ────────────────────────────────────────────────────────
-    ba = load_csv(TABLES.parent / "lexicon" / "before_after.csv")
-    n_words = _row_count(TABLES.parent / "lexicon" / "kept_lexicon.csv")
-    n_idioms = _row_count(TABLES.parent / "lexicon" / "kept_idioms.csv")
+    ba = load_csv(LEXICON / "before_after.csv")
+    n_words = _row_count(LEXICON / "kept_lexicon.csv")
+    n_idioms = _row_count(LEXICON / "kept_idioms.csv")
     st.subheader("The scoring model: FinVADER-Extended")
     st.markdown(
-        f"Headlines are scored with **FinVADER-Extended** = finVADER (VADER + two finance "
-        f"word lists) **plus our own layer**: **{n_words} finance words** and "
-        f"**{n_idioms} finance idioms**, each mined from a fresh news corpus and rated by a "
-        "10-independent-agent panel (kept only where |mean| ≥ 0.5 and cross-agent std < 2.0). "
-        "Idioms are applied by phrase-collapsing so context fires regardless of position — "
-        "e.g. *profit warning* scores negative, not the +0.13 finVADER gives it.")
+        f"Headlines are scored with **FinVADER-Extended** = finVADER (VADER + two finance word "
+        f"lists) **plus our own layer**: **{n_words} finance words** and **{n_idioms} finance "
+        "idioms**, each mined from a fresh news corpus and rated by a 10-independent-agent panel "
+        "(kept where |mean| ≥ 0.5 and cross-agent std < 2.0). Idioms are applied by phrase-"
+        "collapsing so context fires regardless of position — e.g. *profit warning* scores "
+        "negative, not the +0.13 finVADER gives it.")
     if not ba.empty:
         d = {r["model"]: r["pct_non_neutral"] for _, r in ba.iterrows()}
         k1, k2, k3 = st.columns(3)
@@ -513,58 +447,55 @@ elif page == "Sentiment Analytics":
         k2.metric("finVADER", f"{d.get('finVADER', 0):.1f}%")
         k3.metric("FinVADER-Extended", f"{d.get('FinVADER-Extended', 0):.1f}%",
                   delta=f"+{d.get('FinVADER-Extended', 0) - d.get('finVADER', 0):.1f} pts vs finVADER")
-        st.caption("Share of headlines scored non-neutral (|compound| > 0.05). Our layer "
-                   "recovers finance sentiment finVADER misses, without re-introducing plain "
-                   "VADER's false positives.")
+        st.caption("Share of headlines scored non-neutral (|compound| > 0.05).")
 
-    # ── Fusion result (sentiment -> funds) ───────────────────────────────────
     fus = load_csv(TABLES / "fusion_comparison.csv")
     if not fus.empty:
         st.subheader("Does folding sentiment into the funds help?")
         st.dataframe(fus, width="stretch", hide_index=True)
-        st.caption(
-            "Sentiment tilt on the Equity Max-Sharpe fund (above-median-sentiment sectors "
-            "upweighted). The live model uses the **204-idiom** set, which gave the best tilt: "
-            "Sharpe **0.587 → 0.602 (+0.015)**. Extending to 473 idioms added headline coverage "
-            "but *diluted* the tilt benefit to +0.005 — more idioms is not strictly better — so "
-            "we reverted to 204 (the 473 experiment is archived). A small, sample-specific "
-            "effect, reported as-is.")
+        st.caption("Sentiment tilt on the Equity Max-Sharpe fund (above-median-sentiment sectors "
+                   "upweighted). The live model uses the **204-idiom** set, the best tilt: Sharpe "
+                   "**0.587 → 0.602 (+0.015)**. Extending to 473 idioms diluted it to +0.005, so we "
+                   "reverted (473 archived). A small, sample-specific effect, reported as-is.")
 
-    # ── Coverage evidence: why sector-level ──────────────────────────────────
     cov = load_csv(TABLES / "sentiment_coverage.csv")
     if not cov.empty:
         st.subheader("Why the fund signal is built at sector level")
-        st.dataframe(
-            cov.style.format({"pct_of_days": "{:.0f}%", "daily_change_sd_0_100": "{:.2f}"}),
-            width="stretch", hide_index=True)
-        st.caption(
-            "A single stock has news on ~80% of days and its index swings ~12.8 pts/day "
-            "(0–100 scale); pooling to sector level lifts coverage to ~99% and cuts day-to-day "
-            "noise to ~7.3, and the market aggregate to ~2.9. That ~4.5× noise reduction is "
-            "why the fund-facing signal is built at sector, not per-ticker, level.")
+        st.dataframe(cov.style.format({"pct_of_days": "{:.0f}%", "daily_change_sd_0_100": "{:.2f}"}),
+                     width="stretch", hide_index=True)
+        st.caption("A single stock has news on ~80% of days and swings ~12.8 pts/day (0–100 scale); "
+                   "pooling to sector lifts coverage to ~99% and cuts noise to ~7.3, and the market "
+                   "aggregate to ~2.9 — a ~4.5× noise reduction, so the fund signal is sector-level.")
 
-    # ── Sector sentiment series ──────────────────────────────────────────────
     st.subheader("Sector sentiment index over time")
     if sector_sent.empty:
         st.info("Sector sentiment index not found.")
     else:
-        import matplotlib.pyplot as plt
         sectors = sector_sent.columns.tolist()
         selected_sectors = st.multiselect("Sectors to display", sectors, default=sectors[:5])
-        smooth = st.slider("Rolling-mean window (trading days)", 1, 63, 21)
+        # Preset windows + fine slider (kept in sync via session state)
+        if "smooth" not in st.session_state:
+            st.session_state.smooth = 21
+
+        def _set_preset():
+            if st.session_state.get("smooth_preset") is not None:
+                st.session_state.smooth = int(st.session_state.smooth_preset)
+
+        st.segmented_control("Quick window", [7, 14, 21, 30, 63], format_func=lambda d: f"{d}d",
+                             key="smooth_preset", on_change=_set_preset)
+        smooth = st.slider("Rolling-mean window (trading days)", 1, 63, key="smooth")
+
         if selected_sectors:
-            palette = [NAVY, CRIMSON, FOREST, GOLD, "#007C89", "#6B5B95", "#4A5568",
-                       "#8B4513", "#2C7873", "#FF6F61"]
-            fig, ax = plt.subplots(figsize=(11, 4.5))
-            for i, sector in enumerate(selected_sectors):
-                s = sector_sent[sector].rolling(smooth).mean()
-                ax.plot(s.index, s.values, label=sector, lw=1.4, color=palette[i % len(palette)])
-            ax.axhline(0, color="gray", lw=0.9, ls="--")
-            ax.set_xlabel("Date"); ax.set_ylabel(f"FinVADER-Extended compound ({smooth}-day MA)")
-            ax.spines[["top", "right"]].set_visible(False); ax.grid(alpha=0.25)
-            ax.legend(fontsize=8, ncol=2)
-            st.pyplot(fig); plt.close(fig)
-            st.caption(
-                "Sector index = equal-ticker-weight FinVADER-Extended compound, lagged 1 "
-                "trading day (no look-ahead). This lagged sector series is the input to the "
-                "fund sentiment tilt. Source: FINS3645 news_headlines.parquet, 2020–2023.")
+            fig = go.Figure()
+            for i, s in enumerate(selected_sectors):
+                v = sector_sent[s].rolling(smooth).mean()
+                fig.add_trace(go.Scatter(x=v.index, y=v.values, name=s, mode="lines",
+                                         line=dict(width=1.6, color=COLORWAY[i % len(COLORWAY)]),
+                                         hovertemplate="%{y:.3f}<extra>%{fullData.name}</extra>"))
+            fig.add_hline(y=0, line=dict(color="gray", dash="dash", width=1))
+            apply_theme(fig, height=440)
+            fig.update_yaxes(title=f"FinVADER-Extended compound ({smooth}-day MA)")
+            st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
+            st.caption("Sector index = equal-ticker-weight FinVADER-Extended compound, lagged 1 "
+                       "trading day (no look-ahead). This lagged series is the fund tilt's input. "
+                       "Source: FINS3645 news_headlines.parquet, 2020–2023.")
