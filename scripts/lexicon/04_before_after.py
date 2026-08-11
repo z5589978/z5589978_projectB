@@ -69,7 +69,7 @@ def main() -> None:
 
     print("\n" + out.to_string(index=False))
     print(f"\nDistinct headlines:                         {n:,}")
-    print(f"Newly non-neutral from our 20 words:        {newly:,} "
+    print(f"Newly non-neutral from our extension:       {newly:,} "
           f"({100*newly/n:.2f}% of headlines)")
     print(f"finVADER -> Extended non-neutral gain:      "
           f"{out.loc[2,'pct_non_neutral'] - out.loc[1,'pct_non_neutral']:+.2f} pts")

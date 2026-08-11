@@ -23,17 +23,25 @@ from __future__ import annotations
 
 import pandas as pd
 
-# FinVADER-Extension: 20 mined + panel-rated finance words (word -> mean valence,
-# -4..+4). Derived from data/lexicon_extension/kept_lexicon.csv. Not present in
-# finVADER's own lexicon (candidates were filtered against it), so these are
-# genuine additions.
-FINVADER_EXTENSION = {
-    "rout": -3.8, "cyclosporiasis": -2.1, "concerns": -2.0, "dents": -2.0,
-    "slows": -2.0, "tariffs": -2.0, "overshadows": -1.9, "faces": -1.0,
-    "costs": -1.0, "behind": -1.0, "hikes": -0.8,
-    "returns": 0.9, "bigger": 1.0, "raises": 1.0, "added": 1.0, "ahead": 1.0,
-    "highs": 2.0, "climbs": 2.0, "lifts": 2.0, "soars": 3.1,
-}
+# FinVADER-Extension: mined + 10-agent-rated finance words (word -> mean valence,
+# -4..+4). Single source of truth is results/lexicon/kept_lexicon.csv, built across
+# mining rounds by scripts/lexicon/ (candidates filtered against finVADER's own
+# lexicon, so these are genuine additions). Loaded at build time only; the deployed
+# app never imports this module.
+def _load_extension() -> dict[str, float]:
+    import csv
+    import pathlib
+    path = (pathlib.Path(__file__).resolve().parent.parent
+            / "results" / "lexicon" / "kept_lexicon.csv")
+    ext: dict[str, float] = {}
+    if path.exists():
+        with open(path, newline="", encoding="utf-8") as fh:
+            for row in csv.DictReader(fh):
+                ext[row["word"]] = float(row["mean_valence"])
+    return ext
+
+
+FINVADER_EXTENSION = _load_extension()
 
 
 def _get_analyzer(extended: bool = True):

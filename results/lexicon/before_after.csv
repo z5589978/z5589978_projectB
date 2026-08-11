@@ -1,4 +1,4 @@
 model,non_neutral,pct_non_neutral
 plain VADER,53859,51.13
 finVADER,41364,39.27
-FinVADER-Extended,43491,41.29
+FinVADER-Extended,48254,45.81

@@ -89,10 +89,12 @@ we layer our own mined words on top via a third `.lexicon.update()`.
 - [x] 10 independent agent rating passes on the −4…+4 VADER scale (raw archived)
 - [x] Filter: |mean| ≥ 0.5 AND std < 2.0 → 20 survivors (user chose 0.5 floor;
       std never binds, max std 0.52 — documented)
-- [x] Build FinVADER-Extended; 20 survivors injected on −4…+4 scale
-- [x] USER CHECKPOINT: user spot-checked, approved 20-word set
-- [x] Before/after: finVADER 39.3% → Extended 41.3% non-neutral (+2.02pts, 2,176 headlines)
-- [x] Regenerate sector_sentiment_index.csv + fusion (fusion −0.012 Sharpe, honest neg.)
+- [x] Build FinVADER-Extended; scaled to 123 survivors across 2 mining rounds
+      (round 1: 20/150; round 2: 103/409; cumulative 123/100 target reached)
+- [x] USER CHECKPOINT: round-1 20-word set approved; round-2 borderline words flagged
+- [x] Before/after: finVADER 39.3% → Extended 45.8% non-neutral (+6.54pts, 7,041 headlines)
+- [x] Regenerate sector_sentiment_index.csv + fusion (fusion −0.030 Sharpe, honest neg.)
+- [x] Persistent audit: results/lexicon/lexicon_evaluations.csv (559 words, all rounds)
 - [ ] Described with methodology + filtering equation in report Section 4 (report stage)
 
 **Artifacts:** scripts/lexicon/01–04, results/lexicon/ (kept_lexicon.csv,

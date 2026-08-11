@@ -68,11 +68,21 @@ prompt that preceded it:)
 2. **Candidate-list composition** — selected: "Drop proper nouns, refill to 150".
 3. **FinVADER-Extended lexicon set** — selected: "20 words (|mean| ≥ 0.5)".
 
+**Work block 2026-08-11 (lexicon rounds):**
+
+> 1
+
+(Answer to "keep |mean| ≥ 0.5 bar or switch to plain mean ≠ 0?" — chose option 1,
+keep the stricter |mean| ≥ 0.5 bar, and proceed to Round 2.)
+
 ---
 
 ## Correction / process note
 
 This is the second logging-gap correction this project (the first, in log 02, was
-about AI outputs not being logged). Going forward, short prompts and tool-based
-decisions are appended here as they occur, so the verbatim record stays complete
-without bloating the task logs 01–05.
+about AI outputs not being logged).
+
+**Convention (per student request, 2026-08-11):** short interstitial prompts and
+tool-based decisions are appended here verbatim in a BATCH at the end of each work
+block, and committed alongside that block's other work — not per-prompt. This keeps
+the verbatim record complete without a separate commit for every short message.
