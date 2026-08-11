@@ -524,9 +524,11 @@ elif page == "Sentiment Analytics":
         st.dataframe(fus, width="stretch", hide_index=True)
         st.caption(
             "Sentiment tilt on the Equity Max-Sharpe fund (above-median-sentiment sectors "
-            "upweighted). Honest finding: the Sharpe gain peaked at **+0.015** with ~204 "
-            "idioms and diluted to **+0.005** once all 473 were merged — more idioms is not "
-            "strictly better. A small, sample-specific effect, reported as-is.")
+            "upweighted). The live model uses the **204-idiom** set, which gave the best tilt: "
+            "Sharpe **0.587 → 0.602 (+0.015)**. Extending to 473 idioms added headline coverage "
+            "but *diluted* the tilt benefit to +0.005 — more idioms is not strictly better — so "
+            "we reverted to 204 (the 473 experiment is archived). A small, sample-specific "
+            "effect, reported as-is.")
 
     # ── Coverage evidence: why sector-level ──────────────────────────────────
     cov = load_csv(TABLES / "sentiment_coverage.csv")
