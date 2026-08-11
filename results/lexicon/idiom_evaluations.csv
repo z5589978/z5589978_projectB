@@ -399,3 +399,503 @@ big share,1,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
 rally cools,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
 big things,1,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
 oil traders,1,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+analyst downgrade,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+traders react,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+traders look,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+look like,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+posts profit,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+critical minerals,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+judge scandal,2,-2,-3,-3,-2,-2,-2,-3,-2,-3,-3,-2.5,0.527,10,True
+debt restructuring,2,-2,-2,-1,-1,-2,-2,-2,-1,-2,-2,-1.7,0.483,10,True
+liquidation plan,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+network files,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+exits bankruptcy,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+less debt,2,2,2,2,2,1,2,2,2,2,2,1.9,0.316,10,True
+number plans,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+plans million,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+million bankruptcy,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+takes stake,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+prepackaged bankruptcy,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+debt relief,2,2,2,2,2,1,2,2,2,2,2,1.9,0.316,10,True
+data breach,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+fresh cash,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+cut thousands,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+efficiency push,2,1,1,1,1,0,1,1,1,1,1,0.9,0.316,9,True
+artificial general,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+general intelligence,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+cuts jobs,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+jobs offers,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+offers relocations,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+relocations ahead,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+tech layoffs,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+big layoffs,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+housing market,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+forex reserves,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+prices hit,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+deal fade,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+record temperature,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+nuclear reactor,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+high grade,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+grade bond,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+buying momentum,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+data looms,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+buying opportunity,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+hopes dim,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+crude oil,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+stocks tumble,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+mixed ahead,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+stocks slide,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+stocks track,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+chip plant,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+dollar gains,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+gains yen,2,1,0,0,0,1,0,0,1,0,0,0.3,0.483,3,False
+yen weakens,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+jobs loss,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+near seven,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+yield rises,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+tax cut,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+income tax,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+cut costs,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+cost billion,2,-1,-1,0,-1,-1,-1,-1,-1,-1,-1,-0.9,0.316,9,True
+despite strong,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+recession fears,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+retail sales,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+electric grid,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+ishares iboxx,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+corporate bond,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+finding solid,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+sellers notch,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+posts quarterly,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+profit surge,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+flash crash,2,-4,-4,-4,-4,-4,-4,-4,-3,-4,-4,-3.9,0.316,10,True
+stock drop,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+live shopping continues,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+hit record highs,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+near a major,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+top and possible,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+possible a type,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+second quarter earnings,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+first ever annual,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+stock stages best,2,3,3,2,3,2,3,2,2,3,2,2.5,0.527,10,True
+back rate hike,2,0,0,0,0,-1,0,-1,0,0,0,-0.2,0.422,2,False
+ahead inflation data,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+data to test,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+test record setting,2,0,1,1,0,0,0,1,0,1,1,0.5,0.527,5,True
+eases rate hike,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+quarterly profit beat,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+cuts annual revenue,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+annual revenue forecast,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+soar as forecast,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+business not disrupting,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+fall on weak,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+lifts sales growth,2,3,3,3,3,2,3,3,3,3,2,2.8,0.422,10,True
+sales growth forecast,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+lifts profit forecast,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+oil output rises,2,0,0,1,0,1,0,0,0,0,0,0.2,0.422,2,False
+billion in minerals,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+forecast on strong,2,2,2,2,2,1,2,2,2,2,2,1.9,0.316,10,True
+faster than expected,2,0,1,1,1,1,1,1,1,1,1,0.9,0.316,9,True
+departs as oil,2,0,0,0,0,0,-1,0,0,0,0,-0.1,0.316,1,False
+oil producer posts,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+producer posts best,2,3,2,2,3,2,3,2,2,2,2,2.3,0.483,10,True
+posts best profit,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+ipsos poll finds,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+high as weak,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+jobs data dents,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+data dents rate,2,0,0,0,0,-1,-1,-1,0,0,0,-0.3,0.483,3,False
+dents rate hike,2,0,0,0,0,-1,0,0,0,0,0,-0.1,0.316,1,False
+bank holds rates,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+six year low,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+ready to raise,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+rates if inflation,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+labor market stable,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+high input prices,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+earnings guidance cut,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+jumps in debut,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+second quarter loss,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+billion share sale,2,0,-1,0,-1,-1,-1,-1,-1,-1,-1,-0.8,0.422,8,True
+cuts profit forecast,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+profit warning hits,2,-4,-4,-4,-3,-3,-3,-3,-3,-3,-3,-3.3,0.483,10,True
+warning hits shares,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+warns on profit,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+cuts profit guidance,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+second quarter profit,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+brown s list,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+weight loss drugs,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+free cash flow,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+billion share buyback,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+run with increase,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+stock is cheap,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+million share buyback,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+near record high,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+data in focus,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+makes first post,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+acquisition with billion,2,1,0,1,1,0,1,1,1,1,1,0.8,0.422,8,True
+deal to buy,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+agrees to delay,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+eyes billion valuation,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+big share unlock,2,-1,-2,-1,-2,-2,-2,-1,-2,-2,-1,-1.6,0.516,10,True
+money traders react,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+buy the dip,2,2,2,1,2,1,2,1,1,1,1,1.4,0.516,10,True
+number plans million,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+plans million bankruptcy,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+million bankruptcy sale,2,-3,-3,-3,-3,-3,-3,-2,-2,-3,-3,-2.8,0.422,10,True
+thousands of jobs,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+artificial general intelligence,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+jobs offers relocations,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+offers relocations ahead,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+cut of workforce,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+big tech stocks,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+hits record temperature,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+high grade bond,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+high on buying,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+momentum as inflation,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+inflation data looms,2,-1,-1,0,0,0,-1,-1,0,0,0,-0.4,0.516,4,False
+deal hopes dim,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+dollar gains yen,2,1,0,0,0,1,0,0,1,0,0,0.3,0.483,3,False
+gains yen weakens,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+weakens as markets,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+ahead of key,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+stock s plunge,2,-4,-4,-4,-4,-4,-4,-4,-3,-4,-4,-3.9,0.316,10,True
+posts quarterly profit,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+markets soared,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+keeps happening,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+debate intensifies,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+stocks swing,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+swing wildly,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+drone maker,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+within reach,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+key takeaways,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+overtakes wendy,2,0,0,1,0,1,1,1,0,0,0,0.4,0.516,4,False
+falling long,2,-1,-1,-1,0,-1,0,0,0,-1,0,-0.5,0.527,5,True
+term unemployment,2,-2,-2,-2,-1,-2,-2,-1,-1,-2,-1,-1.6,0.516,10,True
+sanctions bill,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+bill honoring,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+markets take,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+take center,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+center stage,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+quarterly earnings,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+earnings reports,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+proposes killing,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+killing tax,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+tax breaks,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+overseas oil,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+bugs spend,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+spend million,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+million betting,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+yields stall,2,0,0,-1,0,0,0,-1,0,0,0,-0.2,0.422,2,False
+million shares,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+energy drink,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+economy unexpectedly,2,-1,-1,0,0,-1,-1,0,0,0,0,-0.4,0.516,4,False
+unexpectedly lost,2,-2,-2,-2,-2,-2,-3,-2,-2,-2,-2,-2.1,0.316,10,True
+lost jobs,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+medical platform,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+platform jumped,2,2,2,2,2,2,3,2,2,3,2,2.2,0.422,10,True
+infrastructure era,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+era arrives,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+agents poised,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+reshape demand,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+theater diplomacy,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+inflated claims,2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-1.9,0.316,10,True
+billion building,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+demand soars,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+memory prices,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+families call,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+faster overhaul,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+creates economic,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+economic risks,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+gaining ground,2,2,2,2,2,1,2,2,2,2,2,1.9,0.316,10,True
+major advantage,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+subscriber growth,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+jobs numbers,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+job growth,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+extreme drought,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+drought wreaks,2,-2,-2,-2,-2,-2,-2,-2,-2,-3,-2,-2.1,0.316,10,True
+wreaks havoc,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+supply chains,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+core inflation,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+monetary policy,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+rising oil,2,0,0,0,0,-1,0,0,0,0,0,-0.1,0.316,1,False
+low cost,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+warning signs,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+hostilities drive,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+rates rethink,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+extremely volatile,2,-2,-3,-2,-2,-2,-2,-3,-2,-2,-2,-2.2,0.422,10,True
+volatile outlook,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+posts slowest,2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-1.9,0.316,10,True
+growth target,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+prices rise,2,0,0,0,0,-1,0,0,0,0,0,-0.1,0.316,1,False
+seekers giving,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+force participation,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+participation rate,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+energy security,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+tumble following,2,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-2.9,0.316,10,True
+following big,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+jobs miss,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+level ever,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+suspending dividend,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+raising capital,2,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-0.9,0.316,9,True
+address inflation,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+contemplate fewer,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+fewer meetings,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+meetings markets,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+markets brace,2,-1,-1,-1,-1,-1,-2,-1,-1,-1,-1,-1.1,0.316,10,True
+potential volatility,2,-1,-1,-1,-1,-1,-1,-2,-1,-1,-1,-1.1,0.316,10,True
+volatility ahead,2,-1,-1,-1,-1,-1,-1,-2,-1,-1,-1,-1.1,0.316,10,True
+fund meltdown,2,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4.0,0.0,10,True
+warning shot,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+stock portfolio,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+annualized revenue,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+fintech broker,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+broker clear,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+offers investors,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+investors pre,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+private markets,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+fund imploded,2,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4.0,0.0,10,True
+imploded even,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+tame stock,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+fears weigh,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+cyclospora outbreak,2,-2,-3,-2,-2,-2,-2,-2,-2,-2,-2,-2.1,0.316,10,True
+beat strong,2,2,2,2,3,2,2,2,2,3,2,2.2,0.422,10,True
+strong guidance,2,3,3,3,3,2,3,3,3,3,3,2.9,0.316,10,True
+strong demand,2,2,3,3,3,2,3,3,3,3,2,2.7,0.483,10,True
+advertising streaming,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+get boost,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+discovery reports,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+reports jump,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+streaming revenue,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+revenue ahead,2,2,2,2,2,1,2,2,1,2,2,1.8,0.422,10,True
+posts first,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+annual net,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+net profit,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+annual profit,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+platforms segment,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+advertising momentum,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+business soars,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+store sales,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+sales slump,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+stock volatile,2,-1,-2,-1,-2,-1,-1,-2,-1,-1,-2,-1.4,0.516,10,True
+trimming guidance,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+warship cancellation,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+cancellation hits,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+gets billion,2,1,1,1,1,1,2,1,1,2,1,1.2,0.422,10,True
+billion boost,2,2,2,2,2,2,3,2,2,3,2,2.2,0.422,10,True
+shockingly bad,2,-4,-4,-3,-4,-3,-4,-4,-4,-4,-3,-3.7,0.483,10,True
+bad earnings,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+earnings debut,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+beauty sees,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+sees million,2,0,0,0,0,0,1,0,0,0,0,0.1,0.316,1,False
+million windfall,2,2,2,2,2,2,3,2,2,3,2,2.2,0.422,10,True
+another beat,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+weighs free,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+weak guidance,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+guidance despite,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+easily tops,2,2,3,3,3,2,3,2,3,3,2,2.6,0.516,10,True
+tops quarterly,2,2,2,2,2,2,3,2,2,2,2,2.1,0.316,10,True
+blows past,2,3,3,3,3,2,3,3,3,3,3,2.9,0.316,10,True
+hikes guidance,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+insurance unit,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+unit continues,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+tops earnings,2,2,3,2,3,2,3,2,3,3,2,2.5,0.527,10,True
+streaming offer,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+surge rattles,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+rattles investors,2,-2,-2,-2,-2,-2,-3,-2,-2,-2,-2,-2.1,0.316,10,True
+massive share,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+unlock looms,2,-1,-2,-1,-2,-2,-2,-1,-2,-2,-1,-1.6,0.516,10,True
+defends economics,2,-1,0,0,0,0,-1,0,-1,0,0,-0.3,0.483,3,False
+prices weigh,2,-1,-1,-1,-1,-1,-2,-1,-1,-1,-1,-1.1,0.316,10,True
+spending unnerves,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+despite promises,2,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-0.9,0.316,9,True
+quick payoff,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+center sales,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+sales doubled,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+sales guidance,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+expected earnings,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+begins operational,2,0,1,0,0,1,0,0,0,0,0,0.2,0.422,2,False
+delay midsize,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+midsize vehicle,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+raises full,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+guidance remains,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+remains confident,2,2,2,2,2,1,2,1,2,2,1,1.7,0.483,10,True
+thrift store,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+store launches,2,0,1,0,0,0,1,0,0,0,0,0.2,0.422,2,False
+current deal,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+deal expires,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+holds steady,2,0,0,0,0,0,0,0,0,1,0,0.1,0.316,1,False
+shares plummet,2,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4.0,0.0,10,True
+another key,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+key leadership,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+leadership change,2,-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-0.9,0.316,9,True
+fears worsened,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+joint venture,2,0,1,0,1,0,1,1,1,1,1,0.7,0.483,7,True
+fear gauge,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+volatility index,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+momentum stocks,2,0,1,1,0,0,0,1,0,1,1,0.5,0.527,5,True
+gains ahead,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+oil majors,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+report booming,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+social media,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+market cap,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+stocks rally,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+analysts back,2,1,1,1,1,1,1,1,1,2,1,1.1,0.316,10,True
+growth potential,2,2,2,2,2,1,2,2,1,2,2,1.8,0.422,10,True
+well positioned,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+strong returns,2,3,3,3,3,2,3,3,3,3,3,2.9,0.316,10,True
+options traders,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+natural gas,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+bull market,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+analysts suggest,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+steady income,2,1,1,1,1,1,2,1,1,2,1,1.2,0.422,10,True
+three dividend,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+dividend paying,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+sellers load,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+stock crash,2,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4.0,0.0,10,True
+crash sets,2,-3,-3,-3,-3,-3,-3,-3,-2,-2,-3,-2.8,0.422,10,True
+unique options,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+options strategy,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+smart way,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+dollar slips,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+lockup expiration,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+target date,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+date funds,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+funds aggressive,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+aggressive enough,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+retirement savings,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+national bank,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+bank cuts,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+cuts interest,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+rate cut,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+claims stay,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+yields drop,2,0,0,-1,0,0,0,0,0,0,0,-0.1,0.316,1,False
+stock slumps,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+low end,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+reports increase,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+shares slip,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+profit rise,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+misses profit,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+lockup expiry,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+trading session,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+high close,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+come but markets,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+intensifies as software,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+software stocks swing,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+stocks swing wildly,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+three key takeaways,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+nation s second,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+falling long term,2,-1,-1,-1,0,-1,0,-1,0,-1,-1,-0.7,0.483,7,True
+long term unemployment,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+means for jobseekers,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+spend a lot,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+beat and stock,2,2,2,2,2,2,2,1,2,2,2,1.9,0.316,10,True
+sanctions bill honoring,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+prediction markets take,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+markets take center,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+take center stage,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+round of quarterly,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+quarterly earnings reports,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+proposes killing tax,2,0,-1,-1,0,-1,-1,-1,0,-1,0,-0.6,0.516,6,True
+killing tax breaks,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+breaks for overseas,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+overseas oil production,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+bugs spend million,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+spend million betting,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+clear for metal,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+metal as bond,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+bond yields stall,2,0,0,-1,0,0,0,-1,0,0,0,-0.2,0.422,2,False
+economy unexpectedly lost,2,-2,-2,-3,-2,-3,-3,-2,-2,-3,-2,-2.4,0.516,10,True
+unexpectedly lost jobs,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+medical platform jumped,2,2,2,2,2,2,3,2,2,3,2,2.2,0.422,10,True
+crypto s infrastructure,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+infrastructure era arrives,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+poised to reshape,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+claims of billion,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+billion in savings,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+savings for federal,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+billion as live,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+continues to boom,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+invest billion building,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+building new memory,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+memory chip plants,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+plants as demand,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+controlling families call,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+call for faster,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+overhaul to fend,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+ally that creates,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+creates economic risks,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2.0,0.0,10,True
+governor to intervene,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+merger over electricity,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+spend is paying,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+pricey new tier,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+numbers are due,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+private companies added,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+added just workers,2,0,0,-1,-1,0,-1,-1,-1,-1,0,-0.6,0.516,6,True
+blowing up riverbeds,2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-1,-1.8,0.422,10,True
+extreme drought wreaks,2,-2,-2,-2,-2,-2,-2,-3,-2,-3,-2,-2.2,0.422,10,True
+drought wreaks havoc,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+rising oil prices,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+plans to keep,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+rethink amid extremely,2,0,0,-1,0,-1,0,-1,0,0,-1,-0.4,0.516,4,False
+extremely volatile outlook,2,-2,-3,-2,-2,-2,-2,-3,-2,-2,-2,-2.2,0.422,10,True
+near year high,2,2,2,2,2,1,2,1,1,2,2,1.7,0.483,10,True
+job seekers giving,2,-1,-1,-1,-1,-1,-2,-2,-2,-1,-1,-1.3,0.483,10,True
+giving up labor,2,-1,-1,-2,-1,-1,-2,-2,-1,-1,-1,-1.3,0.483,10,True
+labor force participation,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+force participation rate,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+participation rate falls,2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-1,-1.9,0.316,10,True
+tumble following big,2,-2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-2.9,0.316,10,True
+highest level ever,2,2,1,2,1,1,2,1,1,2,1,1.4,0.516,10,True
+metal is telling,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+plunges after suspending,2,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4,-4.0,0.0,10,True
+dividend and raising,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+prepared to act,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+act on rate,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+hike to address,2,0,0,0,0,-1,0,0,0,0,0,-0.1,0.316,1,False
+contemplate fewer meetings,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+fewer meetings markets,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+meetings markets brace,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+brace for potential,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+potential volatility ahead,2,-1,-1,-1,-1,-1,-1,-2,-1,-1,-1,-1.1,0.316,10,True
+bets against rally,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+shares are falling,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+fintech broker clear,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+offers investors pre,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+access to billion,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+fund imploded even,2,-3,-4,-4,-4,-4,-4,-4,-4,-4,-4,-3.9,0.316,10,True
+tame stock market,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+built a billion,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+fund and lost,2,-2,-2,-2,-2,-2,-3,-2,-3,-2,-2,-2.2,0.422,10,True
+full year outlook,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+outlook as cyclospora,2,-1,-1,-1,-1,-1,-1,-1,0,-1,-1,-0.9,0.316,9,True
+cyclospora fears weigh,2,-2,-3,-2,-2,-2,-2,-3,-2,-2,-2,-2.2,0.422,10,True
+soars on earnings,2,3,3,3,3,3,3,3,3,3,3,3.0,0.0,10,True
+revenue beat strong,2,3,3,3,3,2,3,3,3,3,3,2.9,0.316,10,True
+beat strong guidance,2,3,3,3,3,2,3,3,3,3,3,2.9,0.316,10,True
+guidance for third,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+advertising streaming service,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+discovery reports jump,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+jump in streaming,2,2,2,2,2,2,2,2,2,2,2,2.0,0.0,10,True
+streaming revenue ahead,2,2,2,2,2,1,2,2,1,2,2,1.8,0.422,10,True
+ahead of proposed,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+posts first ever,2,1,1,1,0,0,0,1,1,0,0,0.5,0.527,5,True
+ever annual net,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+annual net profit,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+profit but shares,2,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-0.9,0.316,9,True
+drop as outlook,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+outlook on strength,2,2,2,1,2,1,1,2,2,2,1,1.6,0.516,10,True
+strength of platforms,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+segment and advertising,2,0,0,0,0,0,0,0,0,0,0,0.0,0.0,0,False
+first quarter profit,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+profit and revenue,2,1,1,1,1,1,1,1,1,1,1,1.0,0.0,10,True
+volatile after trimming,2,-2,-2,-2,-2,-2,-2,-3,-2,-2,-2,-2.1,0.316,10,True
+warship cancellation hits,2,-2,-2,-2,-2,-2,-2,-3,-2,-2,-2,-2.1,0.316,10,True
+cancellation hits sales,2,-3,-3,-3,-3,-2,-3,-3,-3,-3,-3,-2.9,0.316,10,True
+hits sales outlook,2,-3,-2,-2,-3,-2,-2,-2,-2,-3,-2,-2.3,0.483,10,True
+gets billion boost,2,2,2,2,2,2,3,2,2,3,2,2.2,0.422,10,True
+takes a backseat,2,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1.0,0.0,10,True
+shockingly bad earnings,2,-4,-4,-4,-4,-3,-4,-4,-4,-4,-3,-3.8,0.422,10,True
+bad earnings debut,2,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3,-3.0,0.0,10,True
+beauty sees million,2,0,0,0,0,0,1,0,0,0,0,0.1,0.316,1,False
+sees million windfall,2,2,2,2,2,2,3,2,2,3,2,2.2,0.422,10,True
+windfall in tariff,2,1,1,1,1,1,2,1,1,2,1,1.2,0.422,10,True
+refunds as profits,2,1,1,1,1,0,1,1,1,1,1,0.9,0.316,9,True
+target after another,2,0,0,0,0,1,0,0,0,1,0,0.2,0.422,2,False

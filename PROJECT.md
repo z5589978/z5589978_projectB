@@ -93,14 +93,15 @@ we layer our own mined words on top via a third `.lexicon.update()`.
       (round 1: 20/150; round 2: 103/409; cumulative 123/100 target reached)
 - [x] USER CHECKPOINT: round-1 20-word set approved; round-2 borderline words flagged
 - [x] Before/after: finVADER 39.3% → Extended 45.8% non-neutral (+6.54pts, 7,041 headlines)
-- [x] Phrase-level idioms extension: 204 finance idioms mined + 10-agent-rated,
-      applied via phrase-collapsing (VADER's native SPECIAL_CASE_IDIOMS is position-
-      limited). Corpus grown 452→2,154 articles. scripts/lexicon/10-13.
-- [x] Regenerate sector_sentiment_index.csv + fusion. With words+idioms the fusion
-      turns POSITIVE: Equity MS Sharpe 0.587 → 0.602 (+0.015); before/after
-      finVADER 39.3% → Extended 47.2% non-neutral (+7.90pts, 8,544 headlines)
+- [x] Phrase-level idioms extension: 473 finance idioms mined + 10-agent-rated over
+      2 rounds (204 + 269), applied via phrase-collapsing (VADER's native
+      SPECIAL_CASE_IDIOMS is position-limited). Corpus grown 452→2,154. scripts/lexicon/10-13.
+- [x] Regenerate sector_sentiment_index.csv + fusion. Fusion POSITIVE: Equity MS
+      Sharpe 0.587 → 0.602 (+0.015) at 204 idioms, → 0.592 (+0.005) at 473 (extra
+      idioms dilute slightly — sharpest ~204). Before/after finVADER 39.3% →
+      Extended 47.5% non-neutral (+8.20pts).
 - [x] Persistent audits: lexicon_evaluations.csv (559 words), idiom_evaluations.csv
-      (400 phrases). kept_lexicon.csv (123) + kept_idioms.csv (204).
+      (900 phrases). kept_lexicon.csv (123) + kept_idioms.csv (473).
 - [ ] Described with methodology + filtering equation in report Section 4 (report stage)
 
 **Artifacts:** scripts/lexicon/01–04, results/lexicon/ (kept_lexicon.csv,

@@ -27,8 +27,8 @@ RAW = ROOT / "data" / "lexicon_extension"
 PUB = ROOT / "results" / "lexicon"
 TRACKER = PUB / "idiom_evaluations.csv"
 
-MIN_FREQ = 3
-CAP = 400
+MIN_FREQ = 2
+CAP = 500
 CAP_SHARE_MAX = 0.6
 
 from _lexicon_common import stopwords, cap_share

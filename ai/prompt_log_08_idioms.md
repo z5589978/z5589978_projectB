@@ -83,5 +83,41 @@ Strong agreement but debatable/boilerplate: "biggest analyst calls", "central ba
 (should be ~0 -- verify it filtered), "rate hike" (-, but directionally arguable),
 "cost cutting" (efficiency vs distress). Review kept_idioms.csv before final report.
 
-**STATUS: 204/200 idioms reached, merged, regenerated. Fusion now positive.
+**STATUS (round 1): 204 idioms reached, merged, regenerated. Fusion +0.015.**
+
+---
+
+## Round 2 idioms (add another 200)
+
+Prompts (verbatim):
+
+> now run rounds until at least 1000 idioms added is reached
+
+(Then superseded by the question + revised directive below.)
+
+> add another 200 idioms using the same process
+
+**AI flag before running:** reaching 1,000 would require ~4-5 more rounds, survival
+falling, and candidates degrading into corpus boilerplate ("moves premarket",
+"biggest moves midday"). The 10-agent filter still protects survivor quality, but
+volume risks diluting a sharp lexicon. User revised target to +200.
+
+Execution:
+- 11_extract_idioms.py round 2: MIN_FREQ lowered to 2, CAP 500. 7,113 candidates
+  available (freq 2-4); batch = 500. Candidates now marginal ("traders react").
+- 10 agents each READ the candidate CSV themselves (shared input, not another
+  agent's ratings -> independence preserved) and wrote their own file. Leaner than
+  embedding 500 phrases per prompt.
+- 12_idiom_aggregate.py round 2: **269/500 survived (54%)** -- quality held up
+  ("stocks slide", "recession fears", "tech layoffs", "hikes guidance", "markets
+  soared"). Well past the +200 asked.
+- **Cumulative: 473 idioms** (204 + 269), 900 phrases evaluated.
+
+Results (123 words + 473 idioms):
+- Before/after: finVADER 39.3% -> Extended 47.5% non-neutral (+8.20 pts).
+- **Fusion +0.005** -- LOWER than +0.015 at 204 idioms. The extra 269 idioms added
+  coverage but slightly diluted the fusion benefit. Honest, useful finding: more
+  idioms is not strictly better; the sharpest signal was around 204. Report this.
+
+**STATUS: +269 idioms added (target +200 exceeded); 473 total, merged, regenerated.
 Economic interpretation to be written by the student.**

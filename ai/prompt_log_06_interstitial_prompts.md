@@ -82,6 +82,12 @@ keep the stricter |mean| ≥ 0.5 bar, and proceed to Round 2.)
 (A dropped-connection nudge mid-idiom-round; no new instruction — resumed the
 in-progress idiom rating.)
 
+> actually, at what point will phrases start getting junky?
+
+(A question, not an instruction — answered with the frequency evidence: round-1
+candidates ran freq 4–43, round-2 freq 3–4 already marginal; the 10-agent filter
+protects survivor quality regardless. Verbatim idiom task directives are in log 08.)
+
 ---
 
 ## Correction / process note
