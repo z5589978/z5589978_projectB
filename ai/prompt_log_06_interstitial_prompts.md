@@ -75,6 +75,13 @@ prompt that preceded it:)
 (Answer to "keep |mean| ≥ 0.5 bar or switch to plain mean ≠ 0?" — chose option 1,
 keep the stricter |mean| ≥ 0.5 bar, and proceed to Round 2.)
 
+**Work block 2026-08-11 (idioms):** (verbatim task prompts are in log 08)
+
+> continue your work, sorry that you lost connection
+
+(A dropped-connection nudge mid-idiom-round; no new instruction — resumed the
+in-progress idiom rating.)
+
 ---
 
 ## Correction / process note

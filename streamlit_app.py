@@ -364,8 +364,8 @@ elif page == "Sentiment Analytics":
     render_header("Sector Sentiment Analytics",
                   "News-sentiment index across the equity sectors")
     st.caption(
-        "FinVADER-Extended compound score of news headlines (finVADER plus 123 "
-        "finance-news words mined from a fresh corpus and rated by a 10-agent panel), "
+        "FinVADER-Extended compound score of news headlines (finVADER plus 123 mined "
+        "finance words and 204 mined finance idioms, each rated by a 10-agent panel), "
         "averaged equal-weight across the tickers in each sector, then lagged 1 "
         "trading day to avoid look-ahead. Score in [−1, +1]; 0 is neutral. "
         "Source: FINS3645 news_headlines.parquet, 2020–2023."

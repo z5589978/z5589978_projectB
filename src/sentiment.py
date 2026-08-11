@@ -28,28 +28,57 @@ import pandas as pd
 # mining rounds by scripts/lexicon/ (candidates filtered against finVADER's own
 # lexicon, so these are genuine additions). Loaded at build time only; the deployed
 # app never imports this module.
-def _load_extension() -> dict[str, float]:
+def _load_csv_map(filename: str, key_col: str) -> dict[str, float]:
     import csv
     import pathlib
     path = (pathlib.Path(__file__).resolve().parent.parent
-            / "results" / "lexicon" / "kept_lexicon.csv")
-    ext: dict[str, float] = {}
+            / "results" / "lexicon" / filename)
+    out: dict[str, float] = {}
     if path.exists():
         with open(path, newline="", encoding="utf-8") as fh:
             for row in csv.DictReader(fh):
-                ext[row["word"]] = float(row["mean_valence"])
-    return ext
+                out[row[key_col]] = float(row["mean_valence"])
+    return out
 
 
-FINVADER_EXTENSION = _load_extension()
+import re
+
+# Single-word additions (kept_lexicon.csv) and phrase-level idioms (kept_idioms.csv),
+# both mined + 10-agent-rated (|mean| >= 0.5, std < 2.0). Provenance: scripts/lexicon/.
+#
+# Idioms are applied by PHRASE COLLAPSING, not VADER's native SPECIAL_CASE_IDIOMS.
+# The native mechanism only fires when the phrase's last word is a lexicon word, there
+# are >= 3 preceding tokens, and the word 3-back is not a lexicon word -- so leading or
+# mid-headline phrases ("Shares soar ...") usually do NOT fire. Instead we detect each
+# idiom in the text and join it into one token carrying the idiom valence, which fires
+# regardless of position. This gives phrases the context single words cannot: finVADER
+# scores "profit warning" at +0.13 (backwards); the collapsed idiom scores it negative.
+FINVADER_EXTENSION = _load_csv_map("kept_lexicon.csv", "word")
+FINVADER_IDIOMS = _load_csv_map("kept_idioms.csv", "phrase")
+
+_IDIOMS_BY_LEN = sorted(FINVADER_IDIOMS, key=lambda p: -len(p))  # longest-first
+
+
+def _collapse(phrase: str) -> str:
+    """Join a phrase into a single alphabetic token, e.g. 'profit warning' -> 'profitwarning'."""
+    return re.sub(r"[^a-z]", "", phrase.lower())
+
+
+def apply_idioms(text: str) -> str:
+    """Replace each known idiom phrase in the text with its collapsed single token."""
+    t = str(text)
+    for phrase in _IDIOMS_BY_LEN:
+        t = re.sub(r"(?i)\b" + re.escape(phrase) + r"\b", _collapse(phrase), t)
+    return t
 
 
 def _get_analyzer(extended: bool = True):
     """Return the FinVADER-Extended analyzer (or plain finVADER if extended=False).
 
     Base = NLTK VADER lexicon + finVADER's two finance word lists (SentiBigNomics
-    scaled x0.1, Henry as-is), matching the Week 9 lecture. When extended, our 20
-    mined words are layered on top via a third lexicon.update().
+    scaled x0.1, Henry as-is), matching the Week 9 lecture. When extended, our mined
+    single words AND collapsed idiom tokens are layered on the lexicon. Use
+    finvader_extended_score() so idiom phrases are collapsed before scoring.
     """
     import nltk
     nltk.download("vader_lexicon", quiet=True)
@@ -62,25 +91,27 @@ def _get_analyzer(extended: bool = True):
     sia.lexicon.update(lexicon2())
     if extended:
         sia.lexicon.update(FINVADER_EXTENSION)
+        sia.lexicon.update({_collapse(p): v for p, v in FINVADER_IDIOMS.items()})
     return sia
 
 
+def finvader_extended_score(sia, text: str, idioms: bool = True) -> float:
+    """Compound score under FinVADER-Extended, collapsing idiom phrases first."""
+    try:
+        return sia.polarity_scores(apply_idioms(text) if idioms else str(text))["compound"]
+    except Exception:
+        return 0.0
+
+
 def score_headlines(headlines: pd.DataFrame) -> pd.DataFrame:
-    """Add a 'compound' VADER score column to the headlines frame.
+    """Add a 'compound' FinVADER-Extended score column to the headlines frame.
 
     Expects columns: title, ticker, date (tz-naive), sector.
     Returns the same frame with an added 'compound' column.
     """
     sia = _get_analyzer()
-
-    def _score(title: str) -> float:
-        try:
-            return sia.polarity_scores(str(title))["compound"]
-        except Exception:
-            return 0.0
-
     out = headlines.copy()
-    out["compound"] = out["title"].apply(_score)
+    out["compound"] = out["title"].apply(lambda t: finvader_extended_score(sia, str(t)))
     return out
 
 

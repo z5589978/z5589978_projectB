@@ -22,7 +22,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.etl import load_clean_news
-from src.sentiment import _get_analyzer
+from src.sentiment import _get_analyzer, apply_idioms
 
 NEUTRAL_BAND = 0.05
 
@@ -43,10 +43,12 @@ def main() -> None:
     fv = _get_analyzer(extended=False)
     fx = _get_analyzer(extended=True)
 
-    def comp(analyzer):
-        return titles.map(lambda t: analyzer.polarity_scores(str(t))["compound"])
+    def comp(analyzer, idioms=False):
+        return titles.map(lambda t: analyzer.polarity_scores(
+            apply_idioms(str(t)) if idioms else str(t))["compound"])
 
-    s_va, s_fv, s_fx = comp(va), comp(fv), comp(fx)
+    s_va, s_fv = comp(va), comp(fv)
+    s_fx = comp(fx, idioms=True)   # FinVADER-Extended: words + collapsed idiom phrases
 
     def nonneutral(s):
         return (s.abs() > NEUTRAL_BAND)
