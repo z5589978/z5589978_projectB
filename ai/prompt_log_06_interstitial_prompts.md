@@ -49,6 +49,8 @@ prompt that preceded it:)
 
 > have you been logging all of my prompts veratim?
 
+> has every prompt that was missing been logged?
+
 ---
 
 ## Slash command
