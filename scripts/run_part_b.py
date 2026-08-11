@@ -157,6 +157,34 @@ sector_sent.index.name = "date"
 sector_sent.to_csv(DATA / "sector_sentiment_index.csv")
 print("Saved results/data/sector_sentiment_index.csv")
 
+# ── Week 9 index-construction deliverables (standalone fear/greed exhibits) ───
+# Market-wide aggregate index, 0-100 rescale, coverage analysis, and look-ahead-safe
+# (expanding-window) standardisation. These describe the index; the tilt keeps its
+# own same-day cross-sectional median split.
+from src.sentiment import (to_score_100, build_aggregate_sentiment,
+                           standardise_expanding, sentiment_coverage, z_band_label)
+
+coverage = sentiment_coverage(ticker_sent, sector_map, trading_dates)
+coverage.to_csv(TABLES / "sentiment_coverage.csv", index=False)
+print("Saved results/tables/sentiment_coverage.csv")
+print(coverage.to_string(index=False))
+
+agg_sent = build_aggregate_sentiment(ticker_sent, trading_dates)
+agg = pd.DataFrame({"compound": agg_sent})
+agg["score_100"] = to_score_100(agg["compound"])
+agg["z_expanding"] = standardise_expanding(agg["score_100"])
+agg["z_full"] = (agg["score_100"] - agg["score_100"].mean()) / agg["score_100"].std()
+agg["band"] = agg["z_expanding"].apply(z_band_label)
+agg.index.name = "date"
+agg.to_csv(DATA / "aggregate_sentiment_index.csv")
+print("Saved results/data/aggregate_sentiment_index.csv")
+
+_below50 = float((agg["score_100"] < 50).mean() * 100)
+_ov = agg.dropna(subset=["z_expanding"])
+_corr = float(_ov["z_expanding"].corr(_ov["z_full"]))
+print(f"  aggregate index below 50 on {_below50:.1f}% of days (levels say 'greed' "
+      f"almost always -> standardise); expanding vs full-sample z corr = {_corr:.3f}")
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # 5. Sentiment-fusion: equity Max Sharpe base vs tilted
@@ -334,6 +362,43 @@ with plt.rc_context(_style()):
     fig.savefig(FIGURES / "sector_sentiment.png", bbox_inches="tight", dpi=150)
     plt.close(fig)
 print("Saved results/figures/sector_sentiment.png")
+
+
+# ── Figure 5b: Aggregate fear/greed index on 0-100, and standardised ───────────
+# Week 9's central point: in levels the index sits above 50 on almost every day, so
+# it must be standardised (expanding window, look-ahead-safe) to separate relatively
+# fearful/greedy days.
+with plt.rc_context(_style()):
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(13, 4.5))
+    roll100 = agg["score_100"].rolling(21).mean()
+    axL.plot(agg.index, agg["score_100"].values, color=STEEL, lw=0.5, alpha=0.5)
+    axL.plot(roll100.index, roll100.values, color=NAVY, lw=1.8)
+    axL.axhline(50, color=CRIMSON, lw=0.9, ls="--")
+    axL.text(agg.index[5], 50.6, "Neutral (50)", fontsize=7, color=CRIMSON)
+    axL.set_ylabel("Fear/greed index (0–100)"); axL.set_xlabel("Date")
+    axL.set_title(f"Panel A. Levels — above 50 on {100-_below50:.0f}% of days",
+                  fontsize=9, fontweight="bold")
+
+    zroll = agg["z_expanding"].rolling(21).mean()
+    axR.axhspan(1.5, 4, color=FOREST, alpha=0.12); axR.axhspan(-4, -1.5, color=CRIMSON, alpha=0.12)
+    axR.plot(agg.index, agg["z_expanding"].values, color=STEEL, lw=0.5, alpha=0.5)
+    axR.plot(zroll.index, zroll.values, color=NAVY, lw=1.8)
+    axR.axhline(0, color="gray", lw=0.9, ls="--")
+    axR.text(agg.index[5], 1.62, "unusually greedy", fontsize=7, color=FOREST)
+    axR.text(agg.index[5], -1.95, "unusually fearful", fontsize=7, color=CRIMSON)
+    axR.set_ylim(-3, 3); axR.set_ylabel("Standardised index (z, expanding)"); axR.set_xlabel("Date")
+    axR.set_title("Panel B. Standardised — separates fearful/greedy days", fontsize=9, fontweight="bold")
+
+    fig.suptitle("Figure 5b. Aggregate news fear/greed index (all 50 equities), 2020–2023",
+                 fontsize=10, y=1.02)
+    fig.text(0.5, -0.03,
+             f"Note: index = (compound+1)/2×100, equal-ticker-weight across 50 stocks, lagged 1 trading day. "
+             f"z uses an expanding window (look-ahead-safe); expanding vs full-sample z correlate {_corr:.3f}. "
+             "Source: FINS3645 news_headlines.parquet.", ha="center", fontsize=7, color="gray")
+    plt.tight_layout()
+    fig.savefig(FIGURES / "aggregate_sentiment_standardised.png", bbox_inches="tight", dpi=150)
+    plt.close(fig)
+print("Saved results/figures/aggregate_sentiment_standardised.png")
 
 
 # ── Figure 6: Fusion before vs after ───────────────────────────────────────

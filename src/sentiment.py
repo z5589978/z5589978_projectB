@@ -176,6 +176,96 @@ def build_sector_sentiment(
     return sector_filled.reindex(trading_dates)
 
 
+# ── Week 9 index-construction helpers (0-100 scale, aggregate index, coverage,
+#    look-ahead-safe standardisation). The tilt keeps its own same-day cross-sectional
+#    median split (see build_sentiment_tilt); these are for the standalone
+#    sentiment-index exhibits the Week 9 deck frames on the 0-100 fear/greed scale.
+
+def to_score_100(compound):
+    """Rescale a compound score in [-1, 1] to the 0-100 fear/greed scale (Week 9):
+    score = (compound + 1) / 2 * 100. 0 = extreme fear, 50 = neutral, 100 = extreme greed."""
+    return (compound + 1.0) / 2.0 * 100.0
+
+
+# Standardised (z) fear/greed bands, matching the Week 9 Z_BANDS.
+Z_BANDS = [(-99.0, -1.5, "Extreme fear"), (-1.5, -0.5, "Fear"),
+           (-0.5, 0.5, "Neutral"), (0.5, 1.5, "Greed"), (1.5, 99.0, "Extreme greed")]
+
+
+def z_band_label(z: float) -> str:
+    """Standardised index value -> fear/greed band name (Week 9)."""
+    if pd.isna(z):
+        return "n/a"
+    for lo, hi, name in Z_BANDS:
+        if lo <= z < hi:
+            return name
+    return "Extreme greed"
+
+
+def build_aggregate_sentiment(
+    ticker_sentiment: pd.DataFrame,
+    trading_dates: pd.DatetimeIndex,
+    lag: bool = True,
+) -> pd.Series:
+    """Market-wide aggregate sentiment index: equal-ticker-weight mean across all
+    tickers each day (Week 9's third aggregation level). Lagged 1 trading day and
+    filled by the same convention as the sector index when lag=True.
+
+    Note: equal-ticker-weight (mean of ticker-day means), consistent with the sector
+    index, rather than the deck's headline-weight pooling -- a deliberate choice so
+    the aggregate and sector indices are directly comparable.
+    """
+    agg = ticker_sentiment.mean(axis=1)  # skipna: mean across tickers with news
+    if lag:
+        agg = agg.shift(1).ffill().fillna(0.0)
+    return agg.reindex(trading_dates)
+
+
+def standardise_expanding(series: pd.Series, min_periods: int = 252) -> pd.Series:
+    """Look-ahead-safe z-score: at each date use only data up to that date (expanding
+    window), never the full sample. This is the Week 9 slide-28 correction -- a live
+    trading signal must standardise against history known at the time."""
+    exp = series.expanding(min_periods=min_periods)
+    return (series - exp.mean()) / exp.std()
+
+
+def sentiment_coverage(
+    ticker_sentiment: pd.DataFrame,
+    sector_map: dict[str, str],
+    trading_dates: pd.DatetimeIndex,
+) -> pd.DataFrame:
+    """Coverage + index-volatility by aggregation level (Week 9), the evidence for
+    building the index at sector rather than single-stock level. Day-to-day SD is
+    reported on the 0-100 scale to match the deck's magnitudes."""
+    n = len(trading_dates)
+    stock100 = to_score_100(ticker_sentiment)
+    stock_days = ticker_sentiment.notna().sum(axis=0)
+    stock_sd = stock100.diff().std(axis=0)
+
+    ts = ticker_sentiment.copy()
+    ts.columns = [sector_map.get(c, c) for c in ts.columns]
+    sector_daily = ts.T.groupby(ts.columns).mean().T
+    sector100 = to_score_100(sector_daily)
+    sector_days = sector_daily.notna().sum(axis=0)
+    sector_sd = sector100.diff().std(axis=0)
+
+    agg = ticker_sentiment.mean(axis=1)
+    agg100 = to_score_100(agg)
+
+    rows = [
+        {"level": "single stock (median)", "days_with_news": int(stock_days.median()),
+         "pct_of_days": round(100 * stock_days.median() / n, 0),
+         "daily_change_sd_0_100": round(float(stock_sd.median()), 2)},
+        {"level": "sector (median)", "days_with_news": int(sector_days.median()),
+         "pct_of_days": round(100 * sector_days.median() / n, 0),
+         "daily_change_sd_0_100": round(float(sector_sd.median()), 2)},
+        {"level": "aggregate (all 50)", "days_with_news": int(agg.notna().sum()),
+         "pct_of_days": round(100 * agg.notna().sum() / n, 0),
+         "daily_change_sd_0_100": round(float(agg100.diff().std()), 2)},
+    ]
+    return pd.DataFrame(rows)
+
+
 def build_sentiment_tilt(
     base_weights: pd.DataFrame,
     sector_sentiment: pd.DataFrame,
