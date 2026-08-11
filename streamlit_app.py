@@ -188,6 +188,18 @@ BAND_COLORS = {
 }
 METHOD_NAMES = {"ew": "Equal Weight", "mv": "Min Variance", "ms": "Max Sharpe",
                 "rp": "Risk Parity", "hrp": "Hierarchical Risk Parity"}
+_NAME_TO_METHOD = {v: k for k, v in METHOD_NAMES.items()}
+# Growth-of-$1 chart: encode method -> colour and family -> line style so all 15 funds
+# get a unique, meaningful combination (a plain 10-colour cycle repeats after 10 funds).
+METHOD_COLOR = {"ew": STEEL, "mv": NAVY, "ms": FOREST, "rp": CRIMSON, "hrp": VIOLET}
+FAMILY_DASH = {"equity": "solid", "crypto": "dash", "combined": "dot"}
+
+
+def fund_style(fund_name: str) -> tuple[str, str]:
+    """(colour, dash) for a fund column name like 'Combined Max Sharpe'."""
+    family, _, method_label = fund_name.partition(" ")
+    return (METHOD_COLOR.get(_NAME_TO_METHOD.get(method_label, "ew"), STEEL),
+            FAMILY_DASH.get(family.lower(), "solid"))
 
 fund_returns = load_indexed(DATA / "fund_returns.csv")
 fund_weights = load_csv(DATA / "fund_weights.csv")
@@ -246,15 +258,39 @@ if page == "Compare Funds":
     to_plot = (fund_returns.columns.tolist() if fam == "All"
                else [c for c in fund_returns.columns if fam.lower() in c.lower()])
     if to_plot:
+        c_log, c_hi = st.columns([1, 3])
+        with c_log:
+            log_scale = st.toggle("Log scale", value=False,
+                                  help="Log y-axis — makes the compressed equity/combined "
+                                       "cluster readable when crypto's growth dwarfs them.")
+        with c_hi:
+            highlight = st.selectbox("Highlight one fund", ["None"] + to_plot,
+                                     help="Fades the other lines so one fund stands out.")
+
         fig = go.Figure()
         for col in to_plot:
+            color, dash = fund_style(col)
             w = growth_of_dollar(fund_returns[col])
-            fig.add_trace(go.Scatter(x=w.index, y=w.values, name=col, mode="lines",
-                                     hovertemplate="%{y:$.2f}<extra>%{fullData.name}</extra>"))
+            faded = (highlight != "None" and col != highlight)
+            fig.add_trace(go.Scatter(
+                x=w.index, y=w.values, name=col, mode="lines",
+                line=dict(color=color, dash=dash, width=1.3 if faded else 2.2),
+                opacity=0.22 if faded else 1.0,
+                hovertemplate="%{y:$.2f}<extra>%{fullData.name}</extra>"))
         fig.add_hline(y=1, line=dict(color="gray", dash="dash", width=1))
-        apply_theme(fig, height=440)
-        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f")
+        apply_theme(fig, height=560)
+        fig.update_layout(hovermode="closest")           # nearest line only (this chart only)
+        if len(to_plot) > 6:                              # 15-fund "All" view: side legend
+            fig.update_layout(legend=dict(orientation="v", yanchor="top", y=1,
+                                          xanchor="left", x=1.02, font=dict(size=10)))
+        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f",
+                         type="log" if log_scale else "linear")
         st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
+        st.caption("Colour = method (Equal Weight, Min Variance, Max Sharpe, Risk Parity, "
+                   "HRP); line style = family (Equity solid, Crypto dashed, Combined dotted) "
+                   "— so every one of the 15 funds is uniquely identifiable and the same "
+                   "colour always means the same method. Hover shows the nearest line; click "
+                   "the legend to toggle a fund, double-click to isolate one.")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
