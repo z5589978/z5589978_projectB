@@ -24,9 +24,9 @@
   combined × 5 methods; a news fear/greed index; a deployed app), plus the 2–3 headline
   numbers you choose to lead with.]`
 - Candidate headline facts to draw from (cite sources): best fund Combined Max Sharpe
-  Sharpe 1.033 (`performance_metrics.csv`); FinVADER-Extended lifts non-neutral headline
+  Sharpe 0.983 (`performance_metrics.csv`); FinVADER-Extended lifts non-neutral headline
   coverage over finVADER 39.27%→47.17% (`before_after.csv`); sentiment tilt Sharpe
-  0.587→0.602 (`fusion_comparison.csv`).
+  0.534→0.552 (`fusion_comparison.csv`).
 
 ---
 
@@ -76,28 +76,28 @@
 
 | Fund | Family | Method | Ann.ret | Ann.vol | Sharpe | Max DD |
 |------|--------|--------|--------:|--------:|-------:|-------:|
-| Equity Equal Weight | equity | ew | 13.21% | 16.17% | 0.817 | −20.32% |
-| Equity Min Variance | equity | mv | 6.25% | 12.75% | 0.490 | −15.43% |
-| Equity Max Sharpe | equity | ms | 10.70% | 18.23% | 0.587 | −26.07% |
-| Equity Risk Parity | equity | rp | 10.55% | 14.58% | 0.724 | −18.53% |
-| Equity HRP | equity | hrp | 9.24% | 13.71% | 0.674 | −16.94% |
-| Crypto Equal Weight | crypto | ew | 50.73% | 66.91% | 0.758 | −81.60% |
-| Crypto Min Variance | crypto | mv | 56.25% | 53.74% | 1.047 | −71.24% |
-| Crypto Max Sharpe | crypto | ms | 14.37% | 64.16% | 0.224 | −89.28% |
-| Crypto Risk Parity | crypto | rp | 52.15% | 65.07% | 0.801 | −79.53% |
-| Crypto HRP | crypto | hrp | 52.79% | 62.95% | 0.839 | −78.05% |
-| Combined Equal Weight | combined | ew | 16.22% | 21.25% | 0.763 | −28.75% |
-| Combined Min Variance | combined | mv | 6.31% | 12.78% | 0.494 | −15.60% |
-| Combined Max Sharpe | combined | ms | 25.48% | 24.65% | **1.033** | −26.26% |
-| Combined Risk Parity | combined | rp | 14.36% | 16.02% | 0.896 | −19.84% |
-| Combined HRP | combined | hrp | 10.39% | 14.01% | 0.741 | −18.41% |
+| Equity Equal Weight | equity | ew | 13.21% | 16.17% | 0.687 | −20.32% |
+| Equity Min Variance | equity | mv | 6.25% | 12.75% | 0.325 | −15.43% |
+| Equity Max Sharpe | equity | ms | 11.97% | 18.47% | 0.534 | −26.10% |
+| Equity Risk Parity | equity | rp | 10.55% | 14.58% | 0.580 | −18.53% |
+| Equity HRP | equity | hrp | 9.24% | 13.71% | 0.520 | −16.94% |
+| Crypto Equal Weight | crypto | ew | 50.73% | 66.91% | 0.730 | −81.60% |
+| Crypto Min Variance | crypto | mv | 56.25% | 53.74% | 1.011 | −71.24% |
+| Crypto Max Sharpe | crypto | ms | 14.17% | 64.45% | 0.190 | −89.46% |
+| Crypto Risk Parity | crypto | rp | 52.15% | 65.07% | 0.772 | −79.53% |
+| Crypto HRP | crypto | hrp | 52.79% | 62.95% | 0.808 | −78.05% |
+| Combined Equal Weight | combined | ew | 16.22% | 21.25% | 0.664 | −28.75% |
+| Combined Min Variance | combined | mv | 6.31% | 12.78% | 0.329 | −15.60% |
+| Combined Max Sharpe | combined | ms | 26.57% | 24.89% | **0.983** | −26.29% |
+| Combined Risk Parity | combined | rp | 14.36% | 16.02% | 0.765 | −19.84% |
+| Combined HRP | combined | hrp | 10.39% | 14.01% | 0.591 | −18.41% |
 
 ### 2.2 Results worth discussing (numbers = fact; interpretation = yours)
-- **Combined Max Sharpe = best risk-adjusted** (Sharpe 1.033, ret 25.48%). `[STUDENT TO WRITE: why might equity+crypto under Max-Sharpe beat either alone? — diversification of the tangency portfolio across two weakly-related return sources.]`
-- **Crypto Max Sharpe = worst crypto fund** (Sharpe 0.224, ret 14.37%, MaxDD −89.28%) despite crypto being the highest-return class. `[STUDENT TO WRITE: connect to mean-variance's sensitivity to noisy μ, amplified in high-vol/high-kurtosis crypto.]`
-- **Crypto Min Variance Sharpe 1.047 > every equity fund.** `[STUDENT TO WRITE: genuine risk-adjusted edge, or an artefact of the vol/annualisation/sample-window difference between asset classes? Note crypto n_days=1208 vs equity 753.]`
+- **Combined Max Sharpe = best risk-adjusted** (Sharpe 0.983, ret 26.57%). `[STUDENT TO WRITE: why might equity+crypto under Max-Sharpe beat either alone? — diversification of the tangency portfolio across two weakly-related return sources.]`
+- **Crypto Max Sharpe = worst crypto fund** (Sharpe 0.190, ret 14.17%, MaxDD −89.46%) despite crypto being the highest-return class. `[STUDENT TO WRITE: connect to mean-variance's sensitivity to noisy μ, amplified in high-vol/high-kurtosis crypto.]`
+- **Crypto Min Variance Sharpe 1.011 > every equity fund.** `[STUDENT TO WRITE: genuine risk-adjusted edge, or an artefact of the vol/annualisation/sample-window difference between asset classes? Note crypto n_days=1208 vs equity 753.]`
 - **HRP lowest/near-lowest MaxDD in every family** (Equity −16.94%, Combined −18.41%, Crypto −78.05%) though not the top Sharpe. `[STUDENT TO WRITE: tie to the HRP paper's claim — stability/robustness over raw in-sample optimality.]`
-- **Equity RP (0.724) > Equity HRP (0.674) > Equity MS (0.587).** `[STUDENT TO WRITE: the more sophisticated method does not always win OOS — discuss why (estimation error, small equity cross-section, single-period sample).]`
+- **Equity RP (0.580) > Equity MS (0.534) > Equity HRP (0.520)** (EW benchmark 0.687 is higher still). `[STUDENT TO WRITE: the more sophisticated method does not always win OOS — discuss why (estimation error, small equity cross-section, single-period sample).]`
 
 ### 2.3 Required exhibits checklist (exact filenames)
 - Performance-metrics table → `results/tables/performance_metrics.csv`
@@ -155,8 +155,8 @@
 - **Idiom phrase-collapsing fix** (the VADER positional bug, source: `ai/prompt_log_08`): VADER's `SPECIAL_CASE_IDIOMS` only fires when the phrase's **last word is a lexicon word, there are ≥3 preceding tokens, and the word 3-back is not a lexicon word** → most headline-LEADING idioms (e.g. "Shares soar …") never fired. Fix: detect each idiom and **collapse it into one token** carrying the idiom valence → fires regardless of position. Example: finVADER scores "profit warning" **+0.13** (backwards); collapsed idiom scores it negative.
 
 ### 4.2 Honestly-reported negative result: 204 vs 473 idioms (source: logs 08, 11; `fusion_comparison.csv`, `kept_idioms_473_round2.csv`)
-- Round 1 → 204 idioms; fusion Sharpe **0.587 → 0.602 (+0.015)**.
-- Round 2 added 269 (→ 473); fusion diluted to **+0.005**.
+- Round 1 → 204 idioms; fusion Sharpe **0.534 → 0.552 (+0.018)**.
+- Round 2 added 269 (→ 473); fusion diluted (the +0.005 comparison was measured under the old RF=0; the 473 set was not re-run under the real RF).
 - **Reverted to 204** (best); **473 archived, not deleted** (`kept_idioms_473_round2.csv`).
 - Rubric hook: "a careful extension that does not beat the baseline, clearly explained, still earns this band."
 - `[STUDENT TO WRITE: explain WHY more idioms diluted rather than helped — candidate quality degrades at lower frequency thresholds; marginal/boilerplate phrases (e.g. "biggest analyst calls", "central bank", "rate hike", "cost cutting" — see appendix) dilute a previously sharp signal.]`
@@ -165,8 +165,8 @@
 - Cross-reference §1.2; frame as the "newer optimisation method" innovation, distinct from the lexicon work. `[STUDENT TO WRITE: one line on why HRP is a genuine methodological addition, not just a fifth colour on a chart.]`
 
 ### 4.4 Fusion result nuance (verbatim from `results/tables/fusion_comparison.csv`)
-- Base Equity Max Sharpe: ret 10.70%, Sharpe **0.587**, MaxDD **−26.07%**.
-- + Sentiment tilt: ret 11.00%, Sharpe **0.602 (+0.015)**, MaxDD **−26.66%** (slightly WORSE).
+- Base Equity Max Sharpe: ret 11.97%, Sharpe **0.534**, MaxDD **−26.10%**.
+- + Sentiment tilt: ret 12.32%, Sharpe **0.552 (+0.018)**, MaxDD **−26.70%** (slightly WORSE).
 - `[STUDENT TO WRITE: interpret the tradeoff — the tilt improved risk-adjusted RETURN but slightly worsened DOWNSIDE protection; a small, sample-specific effect; sentiment as a modest tilt, not a primary signal.]`
 
 ---
