@@ -37,6 +37,8 @@ The platform offers five optimisation methods, each mapping the same 252-day ret
 
 Hierarchical Risk Parity, from Lopez de Prado (2016), allocates risk without ever inverting the covariance matrix, the step that makes Minimum Variance and Maximum Sharpe fragile on noisy or near-singular matrices. It runs in three stages. Tree clustering first groups assets by a correlation distance, so that assets moving together sit in the same branch. Quasi-diagonalisation then reorders the covariance matrix to place correlated assets next to one another. Recursive bisection finally walks down the tree, splitting capital between each pair of branches in inverse proportion to their variance, so the calmer branch receives more. A synthetic four-asset test, with two low-variance and two high-variance assets and near-zero cross-correlation, confirms the mechanism: HRP places 0.901 of its weight on the low-variance cluster and 0.099 on the high-variance one, matching the paper's prediction.
 
+The formal specification of each method, with every symbol defined, is in Appendix D.
+
 
 ### 1.3 Fund universe and the first innovation
 
@@ -271,6 +273,63 @@ The following mined phrases sit near the sentiment boundary and should be review
 ### C. Lexicon artifacts
 
 The final extension comprises 123 words (results/lexicon/kept_lexicon.csv) and 204 idioms (results/lexicon/kept_idioms.csv). The archived 473-idiom experiment is retained in results/lexicon/kept_idioms_473_round2.csv.
+
+
+### D. Formal specification of the portfolio methods
+
+Each fund maps the trailing 252-day window of daily returns to a set of weights by one of five rules. Equations (1) to (7) restate exactly what src/portfolio.py computes. All five methods are long-only and fully invested by construction or constraint, with w_i greater than or equal to 0 and the weights summing to 1.
+
+
+#### Equal Weight
+
+
+$$ w_i = \frac{1}{N}, \quad i = 1, \dots, N, \qquad (1) $$
+
+where N is the number of assets in the fund.
+
+
+#### Minimum Variance
+
+
+$$ \min_{w}\; w^{\top}\Sigma w \quad \mathrm{s.t.}\; \mathbf{1}^{\top} w = 1,\; 0 \leq w_i \leq 1, \qquad (2) $$
+
+where Σ is the sample covariance matrix of daily returns over the estimation window.
+
+
+#### Maximum Sharpe (tangency portfolio)
+
+
+$$ \max_{w}\; \frac{w^{\top}(\mu - r_f)}{\sqrt{w^{\top}\Sigma w}} \quad \mathrm{s.t.}\; \mathbf{1}^{\top} w = 1,\; 0 \leq w_i \leq 1, \qquad (3) $$
+
+where μ is the sample mean daily return vector and r_f is the mean daily risk-free rate over the same estimation window (the real Fama and French rate, not zero).
+
+
+#### Risk Parity
+
+
+$$ \min_{w}\; \sum_{i=1}^{N}\left(\frac{w_i(\Sigma w)_i}{w^{\top}\Sigma w} - \frac{1}{N}\right)^{2} \quad \mathrm{s.t.}\; \mathbf{1}^{\top} w = 1,\; w_i \geq 0, \qquad (4) $$
+
+where w_i(Σw)_i / (w′Σw) is asset i's fractional contribution to total portfolio risk, equalised across all assets at the optimum.
+
+
+#### Hierarchical Risk Parity (López de Prado, 2016)
+
+HRP allocates risk in three steps: tree clustering on a correlation distance, quasi-diagonalisation, and recursive bisection.
+
+
+$$ d_{i,j} = \sqrt{\frac{1}{2}(1 - \rho_{i,j})}, \qquad (5) $$
+
+where ρ_{i,j} is the sample correlation between assets i and j, used to build the distance matrix for tree clustering.
+
+
+$$ V_C = w_C^{\top}\Sigma_C w_C, \quad w_{C,i} = \frac{1/\sigma_i^{2}}{\sum_{j \in C} 1/\sigma_j^{2}}, \qquad (6) $$
+
+where V_C is a cluster's variance under inverse-variance weighting and σ_i² is asset i's variance, used to compare two candidate sub-clusters at each split.
+
+
+$$ \alpha = 1 - \frac{V_L}{V_L + V_R}, \quad w_i \leftarrow \alpha w_i\; (i \in L), \quad w_i \leftarrow (1-\alpha) w_i\; (i \in R), \qquad (7) $$
+
+where L and R are the two sub-clusters at a split and α allocates more of the parent's weight to the lower-variance side, recursively down to single assets.
 
 
 ## Needs Review (author judgement required before submission)

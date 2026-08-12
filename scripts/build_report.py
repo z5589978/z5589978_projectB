@@ -16,9 +16,13 @@ import pathlib
 import re
 import sys
 
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import pandas as pd
+from PIL import Image
 from docx import Document
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
@@ -28,6 +32,8 @@ RESULTS = ROOT / "results"
 REPORT = ROOT / "report"
 REPORT.mkdir(exist_ok=True)
 FIG = RESULTS / "figures"
+EQ_DIR = FIG / "eq"
+EQ_DIR.mkdir(parents=True, exist_ok=True)
 
 # palette / geometry (from Part A build_report.py)
 NAVY_HEX = "1F3A5F"
@@ -204,6 +210,51 @@ def FIGURE(doc, name, caption, width=USABLE_W):
     MD.append(f"\n![{name}](../results/figures/{name})\n\n*{caption}*\n")
 
 
+def H3(doc, text):
+    doc.add_heading(text, level=3)
+    MD.append(f"\n#### {text}\n")
+
+
+# ── equation rendering ──────────────────────────────────────────────────────
+# python-docx has no native Word-equation (OMML) API, and hand-writing OMML for
+# fractions/sums/roots is error-prone and not verifiable in this environment, so
+# equations are rendered from LaTeX with matplotlib's mathtext (no LaTeX toolchain
+# needed) and embedded as centred images with a right-flush number. mathtext needs
+# \leq/\geq (not \le/\ge) and \frac (not \tfrac).
+_EQ_N = [0]
+
+
+def _render_eq(latex_body: str, idx: int):
+    path = EQ_DIR / f"eq{idx}.png"
+    fig = plt.figure(figsize=(0.01, 0.01))
+    fig.text(0, 0, f"${latex_body}$", fontsize=15, color="#111111")
+    fig.savefig(path, dpi=200, bbox_inches="tight", pad_inches=0.06, transparent=True)
+    plt.close(fig)
+    w_px, h_px = Image.open(path).size
+    return path, w_px / 200.0   # native width in inches at 200 dpi
+
+
+def EQUATION(doc, latex_body: str, where: str, md_latex: str | None = None):
+    """Numbered display equation: a centred mathtext image with a right-flush (n),
+    followed by a 'where ...' sentence defining every symbol. Used in the appendix,
+    so the definition sentences are not counted toward the body word cap."""
+    _EQ_N[0] += 1
+    n = _EQ_N[0]
+    path, nat_w = _render_eq(latex_body, n)
+    width_in = min(nat_w, 5.4)   # cap so the (n) number never collides with the image
+    p = doc.add_paragraph()
+    pf = p.paragraph_format
+    pf.tab_stops.add_tab_stop(Inches(USABLE_W / 2), WD_TAB_ALIGNMENT.CENTER)
+    pf.tab_stops.add_tab_stop(Inches(USABLE_W), WD_TAB_ALIGNMENT.RIGHT)
+    pf.space_before, pf.space_after = Pt(4), Pt(2)
+    p.add_run("\t")
+    p.add_run().add_picture(str(path), width=Inches(width_in))
+    rn = p.add_run(f"\t({n})")
+    rn.font.name, rn.font.size = "Aptos", Pt(11)
+    MD.append(f"\n$$ {md_latex or latex_body} \\qquad ({n}) $$\n")
+    P(doc, where)   # definition sentence as normal prose (uncounted in the appendix)
+
+
 def TOC(doc):
     para = doc.add_paragraph()
     run = para.add_run()
@@ -307,6 +358,7 @@ P(doc, """[STUDENT TO WRITE: why the rest of this design is defensible - window 
 H2(doc, "1.2 The five optimisation methods")
 P(doc, """The platform offers five optimisation methods, each mapping the same 252-day return and covariance estimates to a different set of weights. Equal Weight allocates the same capital to every asset. It estimates nothing, so estimation error cannot destabilise it, which makes it a demanding benchmark. Minimum Variance minimises portfolio variance subject to long-only weights, using the covariance matrix of asset returns but ignoring expected returns, and concentrates in low-volatility assets. Maximum Sharpe, the mean-variance tangency portfolio, maximises expected excess return per unit of volatility. It is the only method that uses the sample mean return, a notoriously noisy estimate over a single sample, so its weights can swing hard toward whatever happened to perform well in the window. Risk Parity equalises each asset's contribution to total portfolio risk, giving a volatile asset a smaller weight than a calm one.""")
 P(doc, """Hierarchical Risk Parity, from Lopez de Prado (2016), allocates risk without ever inverting the covariance matrix, the step that makes Minimum Variance and Maximum Sharpe fragile on noisy or near-singular matrices. It runs in three stages. Tree clustering first groups assets by a correlation distance, so that assets moving together sit in the same branch. Quasi-diagonalisation then reorders the covariance matrix to place correlated assets next to one another. Recursive bisection finally walks down the tree, splitting capital between each pair of branches in inverse proportion to their variance, so the calmer branch receives more. A synthetic four-asset test, with two low-variance and two high-variance assets and near-zero cross-correlation, confirms the mechanism: HRP places 0.901 of its weight on the low-variance cluster and 0.099 on the high-variance one, matching the paper's prediction.""")
+P(doc, """The formal specification of each method, with every symbol defined, is in Appendix D.""")
 
 H2(doc, "1.3 Fund universe and the first innovation")
 P(doc, """The fund universe is three asset families, equity, crypto, and combined, each built with all five methods, for 15 funds in total. The brief requires only a combined fund built with at least two methods, so the platform exceeds the minimum on two axes at once. The set is wider, 15 funds rather than a handful, and it is newer, because HRP is a 2016 method that post-dates the classical mean-variance toolkit. Both count as innovation under the brief's wording, which credits a wider or newer set of funds or optimisation methods than the required minimum. The lexicon work in Section 4 is a separate and larger innovation; the fund set is the first, smaller one.""")
@@ -409,6 +461,29 @@ H2(doc, "B. Borderline idioms to spot-check")
 P(doc, """The following mined phrases sit near the sentiment boundary and should be reviewed before final submission: "biggest analyst calls", "central bank", "rate hike", and "cost cutting". Source: ai/prompt_log_08_idioms.md and results/lexicon/kept_idioms.csv.""")
 H2(doc, "C. Lexicon artifacts")
 P(doc, """The final extension comprises 123 words (results/lexicon/kept_lexicon.csv) and 204 idioms (results/lexicon/kept_idioms.csv). The archived 473-idiom experiment is retained in results/lexicon/kept_idioms_473_round2.csv.""")
+
+H2(doc, "D. Formal specification of the portfolio methods")
+P(doc, """Each fund maps the trailing 252-day window of daily returns to a set of weights by one of five rules. Equations (1) to (7) restate exactly what src/portfolio.py computes. All five methods are long-only and fully invested by construction or constraint, with w_i greater than or equal to 0 and the weights summing to 1.""")
+H3(doc, "Equal Weight")
+EQUATION(doc, r"w_i = \frac{1}{N}, \quad i = 1, \dots, N,",
+         "where N is the number of assets in the fund.")
+H3(doc, "Minimum Variance")
+EQUATION(doc, r"\min_{w}\; w^{\top}\Sigma w \quad \mathrm{s.t.}\; \mathbf{1}^{\top} w = 1,\; 0 \leq w_i \leq 1,",
+         "where Σ is the sample covariance matrix of daily returns over the estimation window.")
+H3(doc, "Maximum Sharpe (tangency portfolio)")
+EQUATION(doc, r"\max_{w}\; \frac{w^{\top}(\mu - r_f)}{\sqrt{w^{\top}\Sigma w}} \quad \mathrm{s.t.}\; \mathbf{1}^{\top} w = 1,\; 0 \leq w_i \leq 1,",
+         "where μ is the sample mean daily return vector and r_f is the mean daily risk-free rate over the same estimation window (the real Fama and French rate, not zero).")
+H3(doc, "Risk Parity")
+EQUATION(doc, r"\min_{w}\; \sum_{i=1}^{N}\left(\frac{w_i(\Sigma w)_i}{w^{\top}\Sigma w} - \frac{1}{N}\right)^{2} \quad \mathrm{s.t.}\; \mathbf{1}^{\top} w = 1,\; w_i \geq 0,",
+         "where w_i(Σw)_i / (w′Σw) is asset i's fractional contribution to total portfolio risk, equalised across all assets at the optimum.")
+H3(doc, "Hierarchical Risk Parity (López de Prado, 2016)")
+P(doc, """HRP allocates risk in three steps: tree clustering on a correlation distance, quasi-diagonalisation, and recursive bisection.""")
+EQUATION(doc, r"d_{i,j} = \sqrt{\frac{1}{2}(1 - \rho_{i,j})},",
+         "where ρ_{i,j} is the sample correlation between assets i and j, used to build the distance matrix for tree clustering.")
+EQUATION(doc, r"V_C = w_C^{\top}\Sigma_C w_C, \quad w_{C,i} = \frac{1/\sigma_i^{2}}{\sum_{j \in C} 1/\sigma_j^{2}},",
+         "where V_C is a cluster's variance under inverse-variance weighting and σ_i² is asset i's variance, used to compare two candidate sub-clusters at each split.")
+EQUATION(doc, r"\alpha = 1 - \frac{V_L}{V_L + V_R}, \quad w_i \leftarrow \alpha w_i\; (i \in L), \quad w_i \leftarrow (1-\alpha) w_i\; (i \in R),",
+         "where L and R are the two sub-clusters at a split and α allocates more of the parent's weight to the lower-variance side, recursively down to single assets.")
 
 # ── Needs review checklist (author-facing) ──
 doc.add_page_break()
