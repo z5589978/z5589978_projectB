@@ -262,9 +262,10 @@ if page == "Compare Funds":
     if to_plot:
         c_log, c_hi = st.columns([1, 3])
         with c_log:
-            log_scale = st.toggle("Log scale", value=False,
+            log_scale = st.toggle("Log scale", value=True,
                                   help="Log y-axis — makes the compressed equity/combined "
-                                       "cluster readable when crypto's growth dwarfs them.")
+                                       "cluster readable when crypto's growth dwarfs them. "
+                                       "Turn off for a single-family view where the spread is smaller.")
         with c_hi:
             highlight = st.selectbox("Highlight one fund", ["None"] + to_plot,
                                      help="Fades the other lines so one fund stands out.")
@@ -337,7 +338,7 @@ elif page == "Fund Fact Sheet":
                                  hovertemplate="%{y:.1%}<extra></extra>"), row=2, col=1)
         apply_theme(fig, height=520)
         fig.update_layout(showlegend=False)
-        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f", row=1, col=1)
+        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f", type="log", row=1, col=1)
         fig.update_yaxes(title="Drawdown", tickformat=".0%", row=2, col=1)
         for a in fig.layout.annotations:
             a.font.update(size=12, color=NAVY)
@@ -393,7 +394,7 @@ elif page == "My Allocation":
                                    hovertemplate="%{y:$.2f}<extra></extra>"))
         fig.add_hline(y=1, line=dict(color="gray", dash="dash", width=1))
         apply_theme(fig, height=380)
-        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f")
+        fig.update_yaxes(title="Growth of $1", tickprefix="$", tickformat=".2f", type="log")
         st.plotly_chart(fig, use_container_width=True, config=PLOTLY_CFG)
 
 
