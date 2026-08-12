@@ -1,3 +1,3 @@
 Fund,Ann. return,Ann. vol.,Sharpe,Max drawdown
-Equity Max Sharpe (base),10.70%,18.23%,0.587,-26.07%
-Equity Max Sharpe + Sentiment tilt,11.00%,18.26%,0.602,-26.66%
+Equity Max Sharpe (base),11.97%,18.47%,0.534,-26.10%
+Equity Max Sharpe + Sentiment tilt,12.32%,18.51%,0.552,-26.70%

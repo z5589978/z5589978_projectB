@@ -37,10 +37,20 @@
 - Weights formed from **past data only**: window is `returns.iloc[i-252 : i]` (excludes day i) → no look-ahead.
 - Rebalance: **first trading day of each calendar month** (`_rebalance_dates`).
 - First live OOS return at index 252 → **2021-01-04** for equity/combined (753 OOS days); **2020-09-10** for crypto (1208 days, 365-day calendar exhausts the window sooner). (source: `performance_metrics.csv` start_date/n_days.)
-- **Risk-free rate = 0** (stated assumption, `RF = 0.0`).
+- **Risk-free rate = a real daily series** (replaces the old `RF = 0.0`). Source: **Fama/French 5 Factors (daily), `RF` column, Kenneth French Data Library**, filtered to **2020-01-02 to 2023-12-29** (`data/external/ff_rf_daily_2020_2023.csv`; `rf` is the decimal daily rate). Annualised, the sample RF runs from **0% (Apr 2020–Jul 2022) to ≈5.0%/yr (Dec 2022 onward)**.
+- RF enters in **two places** (source: `src/backtest.py`): (i) the **Max-Sharpe objective**, using the *mean daily RF over the same 252-day estimation window* at each rebalance (past data only → no look-ahead); (ii) the reported **Sharpe ratio**, now an **excess-return Sharpe** = mean(daily return − daily RF) × 252 / annualised vol, computed per fund over its own date range. The other four methods (EW, MV, RP, HRP) do not use RF, so their weights are unchanged.
+- **Forward-fill choice for crypto (deliberate assumption):** the RF file is on the equity trading calendar (~252 days/yr). Equity and combined funds share that calendar exactly (**0 missing dates**). Crypto funds trade all **365 calendar days**, so **376 of 1,208 crypto dates (31%, all weekends/holidays, incl. the trailing 2023-12-30/31) have no own-day RF**; these are **forward-filled** (carry the last trading-day rate forward), the same carry-forward convention used for missing sentiment days (`CLAUDE.md` rule 8). A short rate barely moves over a weekend, so this is a stated, deliberate choice, not a silent default-to-zero.
 - **Zero transaction costs** (stated assumption; docstring in `backtest.py`).
 - Annualisation: **√252 throughout** (`ANNUALISE = 252`) — all fund return series sit on the trading calendar.
-- `[STUDENT TO WRITE: why this design is defensible — window length (estimation noise vs adaptivity), monthly rebalance (turnover/cost realism), rf=0 (state it's a simplification, magnitude small over 2021–23), no-look-ahead as the integrity backbone.]`
+- `[STUDENT TO WRITE: the 2021-2023 backtest window crosses the Fed's 2022 hiking cycle, so a zero-rate assumption is a much weaker approximation late in the sample than early in it — connect this to the actual RF values you see in the data]`
+- `[STUDENT TO WRITE: why the rest of this design is defensible — window length (estimation noise vs adaptivity), monthly rebalance (turnover/cost realism), no-look-ahead as the integrity backbone.]`
+
+> **⚠ Numbers changed — do not write results from stale figures.** Switching from `RF = 0` to the daily Ken French RF lowered **every** fund's reported Sharpe (positive RF is now subtracted) and shifted the **Max-Sharpe weights** (the optimiser objective changed; EW/MV/RP/HRP weights are byte-identical to before). New headline numbers (source: regenerated `performance_metrics.csv`, `fusion_comparison.csv`):
+> - **Fusion (Equity MS):** base Sharpe **0.587 → 0.534**; tilted **0.602 → 0.552**; effect **+0.015 → +0.018** (still positive; base ann. return 10.70% → 11.97% because MS re-optimised).
+> - **Equity:** EW 0.817→0.687, MV 0.490→0.325, MS 0.587→0.534, RP 0.724→0.580, HRP 0.674→0.520.
+> - **Crypto:** EW 0.758→0.730, MV 1.047→1.011, MS 0.224→0.190, RP 0.801→0.772, HRP 0.839→0.808 (smaller drop — much of crypto's sample is in the zero-rate era and its vol is high).
+> - **Combined:** EW 0.763→0.664, MV 0.494→0.329, MS 1.033→0.983, RP 0.896→0.765, HRP 0.741→0.591.
+> - The Section-3/4 outline tables below and the prose in `report_draft.md` / `build_report.py` still carry the old `RF=0` numbers — rewrite them (in your own words) before submission, and rebuild `report.docx`.
 
 ### 1.2 The five optimisation methods (source: `src/portfolio.py`)
 - **Equal Weight (EW):** 1/N; benchmark, no estimation.

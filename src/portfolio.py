@@ -3,7 +3,8 @@
 Five methods:
   equal_weight              - 1/N across all assets
   min_variance              - minimise portfolio variance (long-only, scipy)
-  max_sharpe                - maximise Sharpe ratio (long-only, scipy, rf=0)
+  max_sharpe                - maximise Sharpe ratio (long-only, scipy; rf supplied
+                              by the caller — the window-mean daily risk-free rate)
   risk_parity               - equalise risk contributions (long-only, scipy)
   hierarchical_risk_parity  - HRP: cluster on correlation, allocate recursively,
                               no covariance inversion (Lopez de Prado, 2016)

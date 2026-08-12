@@ -33,7 +33,7 @@ warnings.filterwarnings("ignore", message=".*No runtime found.*")
 
 from src.etl import load_clean_equities, load_clean_crypto, load_clean_news, build_combined_returns
 from src.features import daily_returns, assemble_headline_panel
-from src.backtest import run_all_funds, run_backtest, ANNUALISE
+from src.backtest import run_all_funds, run_backtest, ANNUALISE, load_rf_daily, align_rf
 from src.sentiment import score_headlines, build_ticker_sentiment, build_sector_sentiment, build_sentiment_tilt
 
 RESULTS = ROOT / "results"
@@ -105,7 +105,16 @@ print(f"Combined panel: {combined_ret.shape}")
 # 2. Run walk-forward backtests for all funds
 # ═══════════════════════════════════════════════════════════════════════════
 print("\nRunning backtests (252-day window, monthly rebalance) …")
-funds = run_all_funds(eq_ret, cr_ret, combined_ret)
+# Daily risk-free rate (Fama/French 5 Factors daily RF, Ken French Data Library).
+# Each fund aligns it to its own calendar; crypto's non-trading days are forward-filled.
+rf_daily = load_rf_daily()
+if rf_daily.empty:
+    print("  WARNING: RF file not found — falling back to RF = 0.")
+else:
+    print(f"  RF loaded: {len(rf_daily)} trading days, "
+          f"{rf_daily.index.min().date()} to {rf_daily.index.max().date()}, "
+          f"annualised range {rf_daily.min()*ANNUALISE:.2%}–{rf_daily.max()*ANNUALISE:.2%}.")
+funds = run_all_funds(eq_ret, cr_ret, combined_ret, rf=rf_daily)
 print(f"  {len(funds)} funds completed.")
 
 
@@ -220,6 +229,12 @@ for i, date in enumerate(base_fund.returns.index):
 
 fusion_ret = pd.Series(fusion_ret_list, index=base_fund.returns.index, name="Equity MS + Sentiment")
 
+# Excess-return Sharpe for the tilted fund, on the same RF convention as FundResult.
+# The fusion fund is on the equity calendar, so align_rf is an exact date match.
+_fusion_rf = align_rf(rf_daily, fusion_ret.index)
+_fusion_excess = fusion_ret - _fusion_rf
+fusion_sharpe = float(_fusion_excess.mean() * ANNUALISE / (fusion_ret.std() * np.sqrt(ANNUALISE)))
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # 6. Figures
@@ -254,7 +269,7 @@ with plt.rc_context(_style()):
             ax.set_ylabel("Growth of $1")
         ax.legend(fontsize=7)
     fig.suptitle("Figure 1. Cumulative return (growth of $1) by fund family, 2021–2023\n"
-                 "(252-day estimation window, monthly rebalance, long-only, rf = 0)", fontsize=10, y=1.02)
+                 "(252-day estimation window, monthly rebalance, long-only)", fontsize=10, y=1.02)
     fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Returns are out-of-sample.",
              ha="center", fontsize=7, color="gray")
     plt.tight_layout()
@@ -330,11 +345,12 @@ with plt.rc_context(_style()):
                     val + 0.01 * (1 if val >= 0 else -1),
                     f"{val:.2f}", ha="center", va="bottom" if val >= 0 else "top", fontsize=8)
         ax.set_title(family_labels[fam], fontsize=10, fontweight="bold")
-        ax.set_ylabel("Sharpe ratio (rf = 0)" if fam == "equity" else "")
+        ax.set_ylabel("Sharpe ratio (excess of RF)" if fam == "equity" else "")
         ax.tick_params(axis="x", rotation=15, labelsize=8)
     fig.suptitle("Figure 4. Out-of-sample Sharpe ratio by fund family and method, 2021–2023",
                  fontsize=10, y=1.02)
-    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Annualised with √252. Risk-free rate = 0.",
+    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Annualised with √252. Excess of the daily "
+             "1-month T-bill (Fama/French RF, Kenneth French Data Library; forward-filled on crypto non-trading days).",
              ha="center", fontsize=7, color="gray")
     plt.tight_layout()
     fig.savefig(FIGURES / "sharpe_barplot.png", bbox_inches="tight", dpi=150)
@@ -458,7 +474,7 @@ fusion_metrics = pd.DataFrame([
         "Fund":           "Equity Max Sharpe + Sentiment tilt",
         "Ann. return":    f"{float(fusion_ret.mean() * ANNUALISE):.2%}",
         "Ann. vol.":      f"{float(fusion_ret.std() * np.sqrt(ANNUALISE)):.2%}",
-        "Sharpe":         f"{float(fusion_ret.mean() * ANNUALISE / (fusion_ret.std() * np.sqrt(ANNUALISE))):.3f}",
+        "Sharpe":         f"{fusion_sharpe:.3f}",
         "Max drawdown":   f"{float(_drawdown(fusion_ret).min()):.2%}",
     },
 ])
@@ -468,8 +484,7 @@ print("Saved results/tables/fusion_comparison.csv")
 print("\n=== Part B complete ===")
 print(f"Funds produced : {len(funds)}")
 print(f"Headlines scored: {len(scored):,} (mean VADER = {scored['compound'].mean():.4f})")
-print(f"\nSentiment-fusion effect on Equity MS:")
+print(f"\nSentiment-fusion effect on Equity MS (excess-return Sharpe):")
 print(f"  Base Sharpe    : {base_fund.sharpe():.3f}")
-fus_sharpe = float(fusion_ret.mean() * ANNUALISE / (fusion_ret.std() * np.sqrt(ANNUALISE)))
-print(f"  Tilted Sharpe  : {fus_sharpe:.3f}")
-print(f"  Change         : {fus_sharpe - base_fund.sharpe():+.3f}")
+print(f"  Tilted Sharpe  : {fusion_sharpe:.3f}")
+print(f"  Change         : {fusion_sharpe - base_fund.sharpe():+.3f}")

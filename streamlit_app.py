@@ -225,7 +225,7 @@ choice = st.sidebar.radio("Navigate", list(NAV), label_visibility="collapsed")
 page = NAV[choice]
 st.sidebar.markdown(
     '<div class="ab-side-foot">Out-of-sample backtest, 2021–2023.<br>'
-    "252-day window · monthly rebalance · rf = 0.<br>"
+    "252-day window · monthly rebalance · RF: daily 1M T-bill (Ken French).<br>"
     "All figures read precomputed results.</div>", unsafe_allow_html=True)
 
 
@@ -239,7 +239,9 @@ def growth_of_dollar(returns: pd.Series):
 if page == "Compare Funds":
     render_header("Compare Funds", "Out-of-sample performance across every fund and method")
     st.caption("Out-of-sample backtested performance (2021–2023). Estimation window: "
-               "252 trading days. Monthly rebalance. Risk-free rate: 0.")
+               "252 trading days. Monthly rebalance. Risk-free rate: daily 1-month "
+               "T-bill proxy (Fama/French RF, Kenneth French Data Library; forward-"
+               "filled on crypto non-trading days). Sharpe is excess of RF.")
     if DATA_MISSING:
         st.warning("Run `python scripts/run_part_b.py` to generate results."); st.stop()
 
@@ -500,8 +502,8 @@ elif page == "Sentiment Analytics":
         st.subheader("Does folding sentiment into the funds help?")
         st.dataframe(fus, width="stretch", hide_index=True)
         st.caption("Sentiment tilt on the Equity Max-Sharpe fund (above-median-sentiment sectors "
-                   "upweighted). The live model uses the **204-idiom** set, the best tilt: Sharpe "
-                   "**0.587 → 0.602 (+0.015)**. Extending to 473 idioms diluted it to +0.005, so we "
+                   "upweighted). The live model uses the **204-idiom** set, the best tilt: excess-of-RF "
+                   "Sharpe **0.534 → 0.552 (+0.018)**. Extending to 473 idioms diluted the effect, so we "
                    "reverted (473 archived). A small, sample-specific effect, reported as-is.")
 
     cov = load_csv(TABLES / "sentiment_coverage.csv")

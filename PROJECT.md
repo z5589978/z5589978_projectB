@@ -62,7 +62,8 @@ Mark each item [ ] = not started, [~] = in progress, [x] = done.
 - [ ] Walk-forward OOS confirmed: no look-ahead, weights from past data only
 - [ ] First live date stated: 252 trading days after start (≈ 2021-01-04)
 - [ ] Rebalance frequency stated: monthly (first trading day of each month)
-- [ ] Risk-free rate stated: 0 (assumption)
+- [ ] Risk-free rate stated: daily 1-month T-bill (Fama/French RF, Ken French Data
+      Library, 2020–2023); forward-filled on crypto non-trading days; Sharpe is excess of RF
 - [ ] Annualisation stated: √252 for all funds (all on equity calendar)
 - [ ] Fact sheets: growth of $1, ann. return, vol, Sharpe, max drawdown, weights
 - [ ] Funds compared in a table and a figure
@@ -100,9 +101,12 @@ we layer our own mined words on top via a third `.lexicon.update()`.
       kept_idioms_473_round2.csv). Applied via phrase-collapsing (VADER's native
       SPECIAL_CASE_IDIOMS is position-limited). Corpus grown 452→2,154. scripts/lexicon/10-13.
 - [x] Regenerate sector_sentiment_index.csv + fusion. Fusion POSITIVE at the live 204
-      set: Equity MS Sharpe 0.587 → 0.602 (+0.015); 473 diluted it to +0.005 (extra
-      idioms not strictly better — reverted, documented finding). Before/after finVADER
-      39.3% → Extended 47.2% non-neutral (+7.90pts) at 204.
+      set: Equity MS excess-of-RF Sharpe 0.534 → 0.552 (+0.018); 473 diluted the effect
+      (extra idioms not strictly better — reverted, documented finding). Before/after
+      finVADER 39.3% → Extended 47.2% non-neutral (+7.90pts) at 204.
+      NOTE: Sharpe figures updated after switching from RF=0 to the daily Ken French RF
+      (see ai/prompt_log_20_daily_risk_free_rate.md). Under RF=0 the numbers were
+      0.587 → 0.602 (+0.015).
 - [x] Persistent audits: lexicon_evaluations.csv (559 words), idiom_evaluations.csv
       (900 phrases). kept_lexicon.csv (123) + kept_idioms.csv (473).
 - [ ] Described with methodology + filtering equation in report Section 4 (report stage)

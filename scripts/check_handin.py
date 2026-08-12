@@ -49,9 +49,30 @@ placeholder_left = [
 check(not placeholder_left, "no leftover zID placeholder",
       f"placeholder {placeholder} still in: {placeholder_left[:3]}")
 
+# Data files must not be committed — BUT distinguish official raw/proprietary project
+# data from small, cited external reference series that a result depends on:
+#   - Raw project data loads via src/data_access.py at build time and is never committed
+#     (large; .parquet is blocked outright regardless of location).
+#   - A small public reference series (e.g. the daily risk-free rate:
+#     data/external/ff_rf_daily_2020_2023.csv, the Fama/French 5 Factors RF column from
+#     the Kenneth French Data Library, ~20 KB) IS allowed, so run_part_b.py stays
+#     reproducible from the repo alone. Gate on BOTH path (data/external/) and a size cap
+#     so a large raw panel dumped into data/external/ is still caught.
+EXTERNAL_REF_DIR = ("data", "external")   # curated, cited external inputs
+EXTERNAL_REF_MAX_BYTES = 512 * 1024       # 512 KB — reference series are tiny; raw panels are not
+
+
+def _is_allowed_reference(p: pathlib.Path) -> bool:
+    rel = p.relative_to(ROOT).parts
+    return (p.suffix.lower() == ".csv"                       # never allow raw .parquet
+            and rel[:2] == EXTERNAL_REF_DIR
+            and p.stat().st_size <= EXTERNAL_REF_MAX_BYTES)
+
+
 data_files = [str(p.relative_to(ROOT)) for p in ROOT.rglob("*")
-              if p.suffix.lower() in {".parquet", ".csv"} and "results" not in p.parts]
-check(not data_files, "no committed data files",
+              if p.is_file() and p.suffix.lower() in {".parquet", ".csv"}
+              and "results" not in p.parts and not _is_allowed_reference(p)]
+check(not data_files, "no committed data files (small cited data/external/ references allowed)",
       f"data files should not be committed: {data_files[:3]}")
 
 junk = [str(p.relative_to(ROOT)) for p in ROOT.rglob("*")
