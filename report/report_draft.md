@@ -160,7 +160,7 @@ The survivors, 123 words and 204 idioms, are layered onto finVADER, and the idio
 
 The extension is reported honestly, including where it stopped helping. A first mining round produced 204 idioms and lifted the fusion Sharpe from 0.534 to 0.552, a gain of 0.018. A second round added 269 more idioms, taking the total to 473, and the fusion gain shrank. [HUMAN EDIT REQUIRED: the 204-versus-473 comparison was measured under the old RF=0 assumption, where the gains were 0.015 and 0.005; only the live 204-idiom fusion was re-run under the real risk-free rate, giving the 0.018 above. Re-run the 473-idiom fusion under the real rate if you want to quote its exact gain, or state that the dilution finding predates the risk-free-rate change.] The larger set was worse, so the platform reverted to the 204-idiom set and archived the 473-idiom set rather than deleting it.
 
-The dilution has a clear cause. Reaching 473 idioms meant lowering the frequency threshold to admit rarer phrases, and the marginal candidates are lower quality: boilerplate such as "central bank", "rate hike", and "cost cutting" recurs constantly in finance writing but carries little directional sentiment. When these near-neutral phrases fire on many headlines, they add noise that dilutes the sharp signal from the original 204. A selective lexicon can beat a permissive one, though the effect here is small and specific to this sample. A careful extension that does not beat a larger baseline, clearly explained, is still a genuine result.
+The dilution has a clear cause. Reaching 473 idioms meant lowering the frequency threshold to admit rarer phrases, and the marginal candidates are lower quality: the second round pulled in fragmentary, low-frequency n-grams such as "drop as outlook", "discovery reports jump", and "added just workers", each appearing only three times in the corpus and carrying ambiguous rather than clean directional sentiment. [HUMAN EDIT REQUIRED: this corrects the earlier draft, which illustrated the dilution with "central bank", "rate hike", and "cost cutting" as high-frequency boilerplate. The data contradicts that: "rate hike" is in the core 204 set with valence -1.0, "central bank" and "cost cutting" were rejected entirely, and the genuinely diluting idioms are the rare three-occurrence fragments listed above (round-two candidate frequency floor was 3, versus 4 and up in round one). Reword this mechanism in your own words: the marginal idioms are rare and fragmentary, not high-frequency boilerplate.] These noisy matches dilute the sharp signal from the original 204. A selective lexicon can beat a permissive one, though the effect here is small and specific to this sample. A careful extension that does not beat a larger baseline, clearly explained, is still a genuine result.
 
 
 ### 4.3 HRP as a second innovation
@@ -267,7 +267,7 @@ On a four-asset test with two low-variance assets, two high-variance assets, and
 
 ### B. Borderline idioms to spot-check
 
-The following mined phrases sit near the sentiment boundary and should be reviewed before final submission: "biggest analyst calls", "central bank", "rate hike", and "cost cutting". Source: ai/prompt_log_08_idioms.md and results/lexicon/kept_idioms.csv.
+The following kept idioms sit closest to the retention floor (|mean valence| = 0.5) and should be reviewed before final submission: "restructuring plan" (-0.50), "share sale" (-0.50), "take private" (+0.70), and "turnaround plan" (+0.80). Source: results/lexicon/kept_idioms.csv.
 
 
 ### C. Lexicon artifacts
