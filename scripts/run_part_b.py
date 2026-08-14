@@ -275,10 +275,14 @@ with plt.rc_context(_style()):
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
         if fam == "equity":
             ax.set_ylabel("Growth of $1 (log scale)")
-        ax.legend(fontsize=7)
+    # One shared legend below the panels (colour = method is identical across all three),
+    # so no per-panel legend can obscure the lines — the crypto panel in particular.
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=5, fontsize=8,
+               frameon=True, bbox_to_anchor=(0.5, -0.06))
     fig.suptitle("Figure 1. Cumulative return (growth of $1) by fund family, 2021–2023\n"
                  "(252-day estimation window, monthly rebalance, long-only)", fontsize=10, y=1.02)
-    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Returns are out-of-sample; growth of $1 on a log y-axis.",
+    fig.text(0.5, -0.13, "Source: FINS3645 project data bundle. Returns are out-of-sample; growth of $1 on a log y-axis.",
              ha="center", fontsize=7, color="gray")
     plt.tight_layout()
     fig.savefig(FIGURES / "cumret_by_family.png", bbox_inches="tight", dpi=150)
