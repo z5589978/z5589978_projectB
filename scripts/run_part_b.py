@@ -349,8 +349,9 @@ with plt.rc_context(_style()):
         ax.tick_params(axis="x", rotation=15, labelsize=8)
     fig.suptitle("Figure 4. Out-of-sample Sharpe ratio by fund family and method, 2021–2023",
                  fontsize=10, y=1.02)
-    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Annualised with √252. Excess of the daily "
-             "1-month T-bill (Fama/French RF, Kenneth French Data Library; forward-filled on crypto non-trading days).",
+    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Annualised with √252 (equity, combined) or √365 "
+             "(crypto). Excess of the daily 1-month T-bill (Fama/French RF, Kenneth French Data Library; forward-filled "
+             "on crypto non-trading days).",
              ha="center", fontsize=7, color="gray")
     plt.tight_layout()
     fig.savefig(FIGURES / "sharpe_barplot.png", bbox_inches="tight", dpi=150)

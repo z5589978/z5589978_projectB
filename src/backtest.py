@@ -29,7 +29,8 @@ from src.portfolio import (equal_weight, min_variance, max_sharpe, risk_parity,
 
 ESTIMATION_WINDOW = 252   # trading days
 RF = 0.0                  # fallback daily risk-free rate if the RF file is missing
-ANNUALISE = 252           # all panels are on equity trading calendar
+ANNUALISE = 252           # equity/combined funds sit on the equity trading calendar
+ANNUALISE_CRYPTO = 365    # crypto-only funds trade all 365 calendar days
 
 # Fama/French 5 Factors (daily) RF column, Kenneth French Data Library, filtered to
 # 2020-01-02..2023-12-29. `rf` is already the decimal daily rate.
@@ -76,18 +77,26 @@ class FundResult:
     weights: pd.DataFrame # (rebalance_date x ticker), NaN between rebalances
     rf: pd.Series | None = None  # daily risk-free rate aligned to `returns` dates
 
+    @property
+    def ann_factor(self) -> int:
+        """Annualisation factor for this fund's calendar: 365 for crypto-only funds
+        (they trade every calendar day), 252 for equity and combined funds (both sit
+        on the equity trading calendar). See CLAUDE.md coding rule 2."""
+        return ANNUALISE_CRYPTO if self.family == "crypto" else ANNUALISE
+
     # Computed on demand
     def ann_return(self) -> float:
-        return float(self.returns.mean() * ANNUALISE)
+        return float(self.returns.mean() * self.ann_factor)
 
     def ann_vol(self) -> float:
-        return float(self.returns.std() * np.sqrt(ANNUALISE))
+        return float(self.returns.std() * np.sqrt(self.ann_factor))
 
     def sharpe(self) -> float:
-        """Annualised excess-return Sharpe: mean(daily return - daily RF) x 252,
-        divided by the fund's annualised volatility. RF is aligned per fund (this
-        fund's own date range), forward-filled onto crypto non-trading days. Falls
-        back to a zero RF only if no RF series was attached."""
+        """Annualised excess-return Sharpe: mean(daily return - daily RF) x the fund's
+        annualisation factor (252 for equity/combined, 365 for crypto), divided by the
+        fund's annualised volatility. RF is aligned per fund (this fund's own date
+        range), forward-filled onto crypto non-trading days. Falls back to a zero RF
+        only if no RF series was attached."""
         v = self.ann_vol()
         if v <= 1e-12:
             return 0.0
@@ -96,7 +105,7 @@ class FundResult:
         else:
             rf_aligned = self.rf.reindex(self.returns.index).fillna(0.0)
             excess = self.returns - rf_aligned
-        return float(excess.mean() * ANNUALISE) / v
+        return float(excess.mean() * self.ann_factor) / v
 
     def max_drawdown(self) -> float:
         wealth = (1 + self.returns).cumprod()

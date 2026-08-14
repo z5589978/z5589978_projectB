@@ -381,7 +381,12 @@ elif page == "My Allocation":
         r = fund_returns[common].dropna(how="any")
         blended = (r * weights[common]).sum(axis=1)
         wealth = (1 + blended).cumprod()
-        ann_r, ann_v = blended.mean() * 252, blended.std() * (252 ** 0.5)
+        # Annualise on the blend's calendar: 365 if the selection is crypto-only (those
+        # funds trade every calendar day), else 252 — any equity/combined fund puts the
+        # blend on the equity trading calendar via the how="any" date intersection above.
+        # Keeps a single-fund blend's Sharpe consistent with the Compare Funds table.
+        ann = 365 if (len(common) and all(str(f).lower().startswith("crypto") for f in common)) else 252
+        ann_r, ann_v = blended.mean() * ann, blended.std() * (ann ** 0.5)
         sharpe = ann_r / ann_v if ann_v > 0 else 0
         mdd = ((wealth - wealth.cummax()) / wealth.cummax()).min()
 

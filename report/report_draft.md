@@ -9,7 +9,7 @@
 
 ## Abstract
 
-AlphaBlend is a prototype systematic investment platform offering 15 rules-based funds across US equities, cryptocurrencies, and a combined book, each built with one of five optimisation methods, alongside a news fear and greed index and a deployed web app. The best risk-adjusted fund is the combined Max Sharpe fund, with an out-of-sample Sharpe ratio of 0.983 and a 26.6% annualised return over 2021 to 2023. Hierarchical Risk Parity delivers the shallowest maximum drawdown in every asset family, trading a little return for stability. The sentiment layer, a finance-tuned VADER model extended with 123 mined words and 204 mined idioms, raises the share of headlines carrying a non-neutral score from 39.3% under finVADER to 47.2%. Tilting the equity Max Sharpe fund toward high-sentiment sectors lifts its Sharpe from 0.534 to 0.552 while slightly deepening its drawdown, evidence that news sentiment works as a modest tilt rather than a primary signal.
+AlphaBlend is a prototype systematic investment platform offering 15 rules-based funds across US equities, cryptocurrencies, and a combined book, each built with one of five optimisation methods, alongside a news fear and greed index and a deployed web app. The best risk-adjusted fund is the combined Max Sharpe fund, with an out-of-sample Sharpe ratio of 0.983 and a 26.6% annualised return over 2021 to 2023. Hierarchical Risk Parity delivers the second-shallowest maximum drawdown in every asset family, behind Minimum Variance, trading a little return for stability. The sentiment layer, a finance-tuned VADER model extended with 123 mined words and 204 mined idioms, raises the share of headlines carrying a non-neutral score from 39.3% under finVADER to 47.2%. Tilting the equity Max Sharpe fund toward high-sentiment sectors lifts its Sharpe from 0.534 to 0.552 while slightly deepening its drawdown, evidence that news sentiment works as a modest tilt rather than a primary signal.
 
 
 ## Contents
@@ -57,11 +57,11 @@ Table 1 reports out-of-sample performance for all 15 funds. Returns and volatili
 | Equity Max Sharpe | 12.0% | 18.5% | 0.534 | -26.1% |
 | Equity Risk Parity | 10.5% | 14.6% | 0.580 | -18.5% |
 | Equity HRP | 9.2% | 13.7% | 0.520 | -16.9% |
-| Crypto Equal Weight | 50.7% | 66.9% | 0.730 | -81.6% |
-| Crypto Min Variance | 56.2% | 53.7% | 1.011 | -71.2% |
-| Crypto Max Sharpe | 14.2% | 64.5% | 0.190 | -89.5% |
-| Crypto Risk Parity | 52.1% | 65.1% | 0.772 | -79.5% |
-| Crypto HRP | 52.8% | 62.9% | 0.808 | -78.0% |
+| Crypto Equal Weight | 73.5% | 80.5% | 0.878 | -81.6% |
+| Crypto Min Variance | 81.5% | 64.7% | 1.217 | -71.2% |
+| Crypto Max Sharpe | 20.5% | 77.6% | 0.229 | -89.5% |
+| Crypto Risk Parity | 75.5% | 78.3% | 0.929 | -79.5% |
+| Crypto HRP | 76.5% | 75.8% | 0.973 | -78.0% |
 | Combined Equal Weight | 16.2% | 21.2% | 0.664 | -28.7% |
 | Combined Min Variance | 6.3% | 12.8% | 0.329 | -15.6% |
 | Combined Max Sharpe | 26.6% | 24.9% | 0.983 | -26.3% |
@@ -72,11 +72,11 @@ Table 1 reports out-of-sample performance for all 15 funds. Returns and volatili
 
 The combined Max Sharpe fund is the best risk-adjusted performer, with a Sharpe ratio of 0.983 and a 26.6% annualised return. It beats the best optimised equity fund, Risk Parity at 0.580, and every standalone crypto fund bar the confounded Minimum Variance fund discussed below. The gain comes from diversification across two weakly related return sources. The tangency portfolio can hold equities and crypto together, and because the two classes do not move in lockstep, blending them raises return per unit of risk beyond what either reaches alone. This is the clearest evidence in the report that the combined book, not a single asset class, is the platform's strongest product.
 
-The same method fails inside the crypto book. Crypto Max Sharpe is the worst of the five crypto funds, with a Sharpe ratio of 0.190 and a maximum drawdown of -89.5%, despite crypto being the highest-returning class in the sample. The cause is the method's reliance on the sample mean return. Crypto returns are extremely volatile and fat-tailed, so a single 252-day estimate of the mean is dominated by noise. Maximum Sharpe concentrates the portfolio in whichever coin spiked in the window, and that bet reverses out of sample. The method that shines on the diversified combined book is the one that concentrates risk fatally when handed a small, wild cross-section.
+The same method fails inside the crypto book. Crypto Max Sharpe is the worst of the five crypto funds, with a Sharpe ratio of 0.229 and a maximum drawdown of -89.5%, despite crypto being the highest-returning class in the sample. The cause is the method's reliance on the sample mean return. Crypto returns are extremely volatile and fat-tailed, so a single 252-day estimate of the mean is dominated by noise. Maximum Sharpe concentrates the portfolio in whichever coin spiked in the window, and that bet reverses out of sample. The method that shines on the diversified combined book is the one that concentrates risk fatally when handed a small, wild cross-section.
 
-Crypto Minimum Variance posts a Sharpe ratio of 1.011, higher than every equity fund, but the number should be read with care rather than as proof that crypto beats equities on a risk-adjusted basis. The crypto funds run over 1,208 out-of-sample days from September 2020, while the equity funds cover 753 days from January 2021, so the two are not measured over the same window, and the crypto series captures the 2020 to 2021 bull run in full. Minimum Variance genuinely helps by steering toward the least volatile coins, but this cross-class comparison is confounded by sample period and should not be over-read.
+Crypto Minimum Variance posts a Sharpe ratio of 1.217, higher than every equity fund, but the number should be read with care rather than as proof that crypto beats equities on a risk-adjusted basis. The crypto funds run over 1,208 out-of-sample days from September 2020, while the equity funds cover 753 days from January 2021, so the two are not measured over the same window, and the crypto series captures the 2020 to 2021 bull run in full. Minimum Variance genuinely helps by steering toward the least volatile coins, but this cross-class comparison is confounded by sample period and should not be over-read.
 
-HRP delivers the shallowest maximum drawdown in every family, at -16.9% in equity, -18.4% in combined, and -78.1% in crypto, in each case the best or near-best of the five methods. It rarely wins on Sharpe, and that is the point. HRP trades a little in-sample optimality for out-of-sample stability, the behaviour Lopez de Prado (2016) predicts for a method that avoids inverting a noisy covariance matrix. For a drawdown-averse investor, HRP is the most defensible default even though it is not the highest-returning.
+HRP delivers the second-shallowest maximum drawdown in every family, behind Minimum Variance, at -16.9% in equity, -18.4% in combined, and -78.1% in crypto, in each case the second-best of the five methods. It rarely wins on Sharpe, and that is the point. HRP trades a little in-sample optimality for out-of-sample stability, the behaviour Lopez de Prado (2016) predicts for a method that avoids inverting a noisy covariance matrix. For a drawdown-averse investor, HRP is the most defensible default even though it is not the highest-returning.
 
 Within equities the optimised ranking is Risk Parity at 0.580, then Maximum Sharpe at 0.534, then HRP at 0.520, with Minimum Variance last at 0.325; Equal Weight, the estimation-free benchmark, still posts the highest equity Sharpe at 0.687. [HUMAN EDIT REQUIRED: under the real risk-free rate this equity ordering changed from the old RF=0 draft, where it read Risk Parity, then HRP, then Maximum Sharpe. Max Sharpe now edges out HRP, and Minimum Variance is now the weakest optimised method, so the earlier reading that "the more elaborate method does not win" and that "Maximum Sharpe is penalised most" no longer holds as written. Rewrite this interpretation in your own words: Risk Parity still tops the optimised methods and the simple risk-based methods remain competitive, but Max Sharpe is no longer the worst.]
 
@@ -165,7 +165,7 @@ The dilution has a clear cause. Reaching 473 idioms meant lowering the frequency
 
 ### 4.3 HRP as a second innovation
 
-HRP is the platform's second and independent innovation, distinct in kind from the lexicon work: a newer optimisation method rather than a richer data signal. Its claim to novelty is not that it adds a fifth line to a chart but that it allocates risk without inverting the covariance matrix, the fragile step in Minimum Variance and Maximum Sharpe. That property produces measurably different behaviour, the shallowest drawdown in every family in Table 1, and weights that rank like Risk Parity yet are not identical to it. It earns its place on evidence, not on novelty for its own sake.
+HRP is the platform's second and independent innovation, distinct in kind from the lexicon work: a newer optimisation method rather than a richer data signal. Its claim to novelty is not that it adds a fifth line to a chart but that it allocates risk without inverting the covariance matrix, the fragile step in Minimum Variance and Maximum Sharpe. That property produces measurably different behaviour, the second-shallowest drawdown in every family in Table 1 (behind Minimum Variance), and weights that rank like Risk Parity yet are not identical to it. It earns its place on evidence, not on novelty for its own sake.
 
 
 ### 4.4 The fusion result
@@ -231,7 +231,7 @@ The sentiment index has real but bounded uses. It can pool thousands of individu
 
 ### 6.3 Three recommendations
 
-First, match the optimisation method to the client. A drawdown-averse investor should default to HRP or Risk Parity, which post the shallowest drawdowns in every family, accepting lower return for stability. An investor chasing return and able to bear volatility should hold the combined Max Sharpe fund, with its 26.6% return and Sharpe of 0.983, accepting deeper drawdowns for that return. The platform should present method as a risk choice, not a technical detail.
+First, match the optimisation method to the client. A drawdown-averse investor should default to HRP or Risk Parity, which post among the shallowest drawdowns in every family (behind Minimum Variance), accepting lower return for stability. An investor chasing return and able to bear volatility should hold the combined Max Sharpe fund, with its 26.6% return and Sharpe of 0.983, accepting deeper drawdowns for that return. The platform should present method as a risk choice, not a technical detail.
 
 Second, use sentiment as a modest tilt, not a primary signal. The fusion result improved Sharpe by only 0.018 while deepening drawdown, and expanding the idiom set diluted rather than strengthened the signal. Both point the same way: sentiment should adjust weights gently around a sound base allocation rather than drive them.
 
@@ -334,7 +334,7 @@ where L and R are the two sub-clusters at a split and α allocates more of the p
 
 ## Needs Review (author judgement required before submission)
 
-1. Section 2, crypto Minimum Variance Sharpe 1.011 vs equity funds: the claim that this is confounded by the different sample window (1,208 vs 753 days) is the draft's reasoning; confirm you agree the comparison is not like-for-like.
+1. Section 2, crypto Minimum Variance Sharpe 1.217 vs equity funds: the claim that this is confounded by the different sample window (1,208 vs 753 days) is the draft's reasoning; confirm you agree the comparison is not like-for-like.
 
 2. Section 2, why the combined Max Sharpe fund beats either asset class alone: the diversification-of-the-tangency-portfolio explanation is AI reasoning; restate it in your own words and check it against what you understand of mean-variance theory.
 

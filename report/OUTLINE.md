@@ -48,7 +48,7 @@
 > **⚠ Numbers changed — do not write results from stale figures.** Switching from `RF = 0` to the daily Ken French RF lowered **every** fund's reported Sharpe (positive RF is now subtracted) and shifted the **Max-Sharpe weights** (the optimiser objective changed; EW/MV/RP/HRP weights are byte-identical to before). New headline numbers (source: regenerated `performance_metrics.csv`, `fusion_comparison.csv`):
 > - **Fusion (Equity MS):** base Sharpe **0.587 → 0.534**; tilted **0.602 → 0.552**; effect **+0.015 → +0.018** (still positive; base ann. return 10.70% → 11.97% because MS re-optimised).
 > - **Equity:** EW 0.817→0.687, MV 0.490→0.325, MS 0.587→0.534, RP 0.724→0.580, HRP 0.674→0.520.
-> - **Crypto:** EW 0.758→0.730, MV 1.047→1.011, MS 0.224→0.190, RP 0.801→0.772, HRP 0.839→0.808 (smaller drop — much of crypto's sample is in the zero-rate era and its vol is high).
+> - **Crypto:** current Sharpes after the real-RF **and √365 annualisation** fixes (`prompt_log_28`): EW **0.878**, MV **1.217**, MS **0.229**, RP **0.929**, HRP **0.973**. (Under RF=0 with √252 these were EW 0.758, MV 1.047, MS 0.224, RP 0.801, HRP 0.839; crypto returns/vols also scale by 365/252 and √(365/252).)
 > - **Combined:** EW 0.763→0.664, MV 0.494→0.329, MS 1.033→0.983, RP 0.896→0.765, HRP 0.741→0.591.
 > - The Section-3/4 outline tables below and the prose in `report_draft.md` / `build_report.py` still carry the old `RF=0` numbers — rewrite them (in your own words) before submission, and rebuild `report.docx`.
 
@@ -81,11 +81,11 @@
 | Equity Max Sharpe | equity | ms | 11.97% | 18.47% | 0.534 | −26.10% |
 | Equity Risk Parity | equity | rp | 10.55% | 14.58% | 0.580 | −18.53% |
 | Equity HRP | equity | hrp | 9.24% | 13.71% | 0.520 | −16.94% |
-| Crypto Equal Weight | crypto | ew | 50.73% | 66.91% | 0.730 | −81.60% |
-| Crypto Min Variance | crypto | mv | 56.25% | 53.74% | 1.011 | −71.24% |
-| Crypto Max Sharpe | crypto | ms | 14.17% | 64.45% | 0.190 | −89.46% |
-| Crypto Risk Parity | crypto | rp | 52.15% | 65.07% | 0.772 | −79.53% |
-| Crypto HRP | crypto | hrp | 52.79% | 62.95% | 0.808 | −78.05% |
+| Crypto Equal Weight | crypto | ew | 73.47% | 80.52% | 0.878 | −81.60% |
+| Crypto Min Variance | crypto | mv | 81.47% | 64.68% | 1.217 | −71.24% |
+| Crypto Max Sharpe | crypto | ms | 20.52% | 77.56% | 0.229 | −89.46% |
+| Crypto Risk Parity | crypto | rp | 75.53% | 78.32% | 0.929 | −79.53% |
+| Crypto HRP | crypto | hrp | 76.46% | 75.76% | 0.973 | −78.05% |
 | Combined Equal Weight | combined | ew | 16.22% | 21.25% | 0.664 | −28.75% |
 | Combined Min Variance | combined | mv | 6.31% | 12.78% | 0.329 | −15.60% |
 | Combined Max Sharpe | combined | ms | 26.57% | 24.89% | **0.983** | −26.29% |
@@ -94,9 +94,9 @@
 
 ### 2.2 Results worth discussing (numbers = fact; interpretation = yours)
 - **Combined Max Sharpe = best risk-adjusted** (Sharpe 0.983, ret 26.57%). `[STUDENT TO WRITE: why might equity+crypto under Max-Sharpe beat either alone? — diversification of the tangency portfolio across two weakly-related return sources.]`
-- **Crypto Max Sharpe = worst crypto fund** (Sharpe 0.190, ret 14.17%, MaxDD −89.46%) despite crypto being the highest-return class. `[STUDENT TO WRITE: connect to mean-variance's sensitivity to noisy μ, amplified in high-vol/high-kurtosis crypto.]`
-- **Crypto Min Variance Sharpe 1.011 > every equity fund.** `[STUDENT TO WRITE: genuine risk-adjusted edge, or an artefact of the vol/annualisation/sample-window difference between asset classes? Note crypto n_days=1208 vs equity 753.]`
-- **HRP lowest/near-lowest MaxDD in every family** (Equity −16.94%, Combined −18.41%, Crypto −78.05%) though not the top Sharpe. `[STUDENT TO WRITE: tie to the HRP paper's claim — stability/robustness over raw in-sample optimality.]`
+- **Crypto Max Sharpe = worst crypto fund** (Sharpe 0.229, ret 20.52%, MaxDD −89.46%) despite crypto being the highest-return class. `[STUDENT TO WRITE: connect to mean-variance's sensitivity to noisy μ, amplified in high-vol/high-kurtosis crypto.]`
+- **Crypto Min Variance Sharpe 1.217 > every equity fund.** `[STUDENT TO WRITE: genuine risk-adjusted edge, or an artefact of the vol/sample-window difference between asset classes? Note crypto n_days=1208 vs equity 753 (annualisation now correctly √365 for crypto).]`
+- **HRP second-lowest MaxDD in every family, behind Min Variance** (Equity −16.94%, Combined −18.41%, Crypto −78.05%) though not the top Sharpe. `[STUDENT TO WRITE: tie to the HRP paper's claim — stability/robustness over raw in-sample optimality.]`
 - **Equity RP (0.580) > Equity MS (0.534) > Equity HRP (0.520)** (EW benchmark 0.687 is higher still). `[STUDENT TO WRITE: the more sophisticated method does not always win OOS — discuss why (estimation error, small equity cross-section, single-period sample).]`
 
 ### 2.3 Required exhibits checklist (exact filenames)
