@@ -24,6 +24,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
+import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 
@@ -264,13 +265,20 @@ with plt.rc_context(_style()):
         ax.axhline(1, color="gray", lw=0.7, ls="--")
         ax.set_title(family_labels[fam], fontsize=10, fontweight="bold")
         ax.set_xlabel("Date")
+        # Log y-axis (crypto's growth dwarfs equity/combined on a linear scale).
+        ax.set_yscale("log")
+        ax.yaxis.set_major_locator(mticker.LogLocator(base=10, subs=(1.0, 1.5, 2.0, 3.0, 5.0, 7.0)))
         ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("$%.2f"))
+        ax.yaxis.set_minor_formatter(mticker.NullFormatter())
+        # Year-only x ticks so the date labels don't overlap in the three narrow panels.
+        ax.xaxis.set_major_locator(mdates.YearLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
         if fam == "equity":
-            ax.set_ylabel("Growth of $1")
+            ax.set_ylabel("Growth of $1 (log scale)")
         ax.legend(fontsize=7)
     fig.suptitle("Figure 1. Cumulative return (growth of $1) by fund family, 2021–2023\n"
                  "(252-day estimation window, monthly rebalance, long-only)", fontsize=10, y=1.02)
-    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Returns are out-of-sample.",
+    fig.text(0.5, -0.02, "Source: FINS3645 project data bundle. Returns are out-of-sample; growth of $1 on a log y-axis.",
              ha="center", fontsize=7, color="gray")
     plt.tight_layout()
     fig.savefig(FIGURES / "cumret_by_family.png", bbox_inches="tight", dpi=150)
