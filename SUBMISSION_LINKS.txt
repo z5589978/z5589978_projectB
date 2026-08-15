@@ -1,0 +1,8 @@
+FINS3645 Part B — Submission Links
+Student: z5589978
+
+Live Streamlit app (deployed):
+https://z5589978projectb-6uf2rcqeabwwwat9k9j5kv.streamlit.app/
+
+Public GitHub repository:
+https://github.com/z5589978/z5589978_projectB
